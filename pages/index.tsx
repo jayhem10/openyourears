@@ -40,7 +40,6 @@ export default function Home({ }: Props) {
           </Head>
           <div className="bg-[#B8E1DD] text-white h-screen snap-y snap-mandatory overflow-y-scroll overflow-x-hidden z-0 scrollbar scrollbar-track-[#0ef5e3] scrollbar-thumb-[#0ef5e3]/80">
             <Navbar session={session}/>
-
             <Main />
           </div>
         </>

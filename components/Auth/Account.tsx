@@ -81,7 +81,7 @@ export default function Account({ session }: { session: Session }) {
 
   return (
     <div className="container" style={{ padding: "50px 0 100px 0" }}>
-      <h1 className="text-center">My account</h1>
+      <h1 className="text-center text-white">My account</h1>
       <div className="form-widget">
         <div>
           <label htmlFor="email">Email</label>
