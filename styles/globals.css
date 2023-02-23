@@ -435,3 +435,40 @@ button.primary,
   margin-bottom: 10px;
   text-decoration: none;
 }
+
+.modal{
+  position: absolute;
+  top: 10%;
+  z-index: 10;
+}
+
+.modal_content{
+  background-color: #FFF;
+  height: 600px;
+  width: 650px;
+}
+
+.modal_header{
+  padding: 10px 0;
+}
+
+.modal_header h1{
+  color: #101010;
+}
+
+.modal_body{
+  padding: 10px 30px;
+}
+
+.modal_body form .form-group{
+  margin-top: 15px;
+  margin-bottom: 15px;
+}
+
+.modal_body form button{
+  color: #101010;
+}
+
+.modal_footer a{
+  color: #101010;
+}
