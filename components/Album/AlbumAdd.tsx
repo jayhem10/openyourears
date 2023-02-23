@@ -11,6 +11,7 @@ const AlbumAdd = ({ visibility, changeVisible }: Props) => {
     const[album, setAlbum] = useState<Album>();
 
     const fillNewAlbum = (event:React.FormEvent<HTMLFormElement>) => {
+        /*https://stackoverflow.com/questions/42217579/data-binding-in-react*/
         event.preventDefault();
         let data = new FormData(event.currentTarget);
         console.log(data.entries());
