@@ -460,12 +460,12 @@ button.primary,
   padding: 10px 30px;
 }
 
-.modal_body form .form-group{
+.modal_body .form-group{
   margin-top: 15px;
   margin-bottom: 15px;
 }
 
-.modal_body form button{
+.modal_body button{
   color: #101010;
 }
 
