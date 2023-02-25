@@ -465,6 +465,10 @@ button.primary,
   margin-bottom: 15px;
 }
 
+.modal_body .form-group label{
+ text-align: left;
+}
+
 .modal_body button{
   color: #101010;
 }

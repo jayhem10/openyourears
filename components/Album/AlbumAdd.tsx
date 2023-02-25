@@ -1,6 +1,6 @@
 import Album from '@/interfaces/album';
 import supabase from '@/utils/supabase';
-import React, { FormEvent, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
 type Props = {
     visibility: boolean
@@ -23,12 +23,13 @@ const AlbumAdd = ({ visibility, changeVisible }: Props) => {
         nbTitle:number,
         style:string,
         releaseDate:string
-    ){        
+    ){  
+        // await fetchLastAlbum();      
         const dateNow = new Date();
-        const dateOptions = {year:'numeric',month:'numeric',day:'numeric'}
+        const dateOptions = {year:'numeric',month:'numeric',day:'numeric'};
         const createdAt = dateNow.toLocaleDateString('US', dateOptions);
 
-         const data = {
+        const data = {
             id: ++lastInsertedId,
             name: albumName,
             groupe: groupe,
@@ -37,14 +38,20 @@ const AlbumAdd = ({ visibility, changeVisible }: Props) => {
             release_date: releaseDate,
             created_at: createdAt,
         };
+        try{
+            let {error} = await supabase
+                .from('albums')
+                .insert([
+                    data
+                ])
+            ;
+            if(error) throw error;
 
-        const {error} = await supabase
-            .from('albums')
-            .insert([
-                data
-            ])
-
-
+            alert("Album added with success !");
+        } catch(errorAdd){
+            alert("An error has occured, you album have not been added !");
+            console.log(errorAdd);
+        }
     }
 
     async function fetchLastAlbum(){
@@ -55,7 +62,6 @@ const AlbumAdd = ({ visibility, changeVisible }: Props) => {
             .order('id', {ascending: false})
         ;
 
-        
         if(data){
             setLastInsertedId(data[0].id);
         }
@@ -64,10 +70,6 @@ const AlbumAdd = ({ visibility, changeVisible }: Props) => {
     useEffect(() => {
         fetchLastAlbum();
     })
-
-    useEffect(() => {
-        console.log(lastInsertedId);
-    }, [lastInsertedId])
 
     return (
         <>
