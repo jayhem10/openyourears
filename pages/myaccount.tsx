@@ -1,15 +1,12 @@
 import { Auth, ThemeSupa } from "@supabase/auth-ui-react";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
 import Account from "@/components/Auth/Account";
-import Navbar from "@/components/Navbar";
-
 
 type Props = {};
 
 export default function MyAccount({}: Props) {
   const session = useSession();
   const supabase = useSupabaseClient();
-console.log("session",session)
   return (
     <>
         {!session ? (
@@ -24,7 +21,6 @@ console.log("session",session)
           </div>
         ) : (
           <>
-            <Navbar session={session}/>
             <Account session={session}/>
           </>
         )}

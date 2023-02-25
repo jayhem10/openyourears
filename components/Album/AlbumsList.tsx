@@ -20,10 +20,11 @@ export default function AlbumsList({}: Props) {
   }, [])
 
   return (
-
-    <div className="relative overflow-x-auto shadow-md sm:rounded-lg">
-        <table className="w-full text-sm text-left text-blue-100 dark:text-blue-100">
-            <thead className="text-xs text-white uppercase bg-[#044A42] border-b border-[#062925] dark:text-white">
+    <>
+<div className="text-center my-3">Albums</div>
+    <div className="relative overflow-x-auto shadow-md sm:rounded-lg h-3/4">
+        <table className="w-full text-sm text-left text-blue-100 dark:text-blue-100 ">
+            <thead className="text-xs text-white uppercase bg-[#131430] border-b border-[#00000] dark:text-white">
                 <tr>
                     <th scope="col" className="px-6 py-3">
                         Album
@@ -62,6 +63,6 @@ export default function AlbumsList({}: Props) {
         </table>
     </div>
 
-
+    </>
   );
 }
