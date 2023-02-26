@@ -13,7 +13,8 @@ const AlbumAdd = ({ visibility, changeVisible }: Props) => {
     const[albumName, setAlbumName] = useState<string>("");
     const[groupe, setGroupe] = useState<string>("");
     const[nbTitle,setNbTitle] = useState<number>(0);
-    const[style, setStyle] = useState<string>("");
+    const[styleOne, setStyleOne] = useState<string>("");
+    const[image, setImage] = useState<string>("");
     const[releaseDate, setReleaseDate] = useState<string>("");
     let[lastInsertedId, setLastInsertedId] = useState<number>(0)
 
@@ -21,22 +22,19 @@ const AlbumAdd = ({ visibility, changeVisible }: Props) => {
         albumName:string,
         groupe:string,
         nbTitle:number,
-        style:string,
-        releaseDate:string
+        styleOne:string,
+        releaseDate:string,
+        image:string,
     ){  
         // await fetchLastAlbum();      
-        const dateNow = new Date();
-        const dateOptions = {year:'numeric',month:'numeric',day:'numeric'};
-        const createdAt = dateNow.toLocaleDateString('US', dateOptions);
-
         const data = {
             id: ++lastInsertedId,
             name: albumName,
             groupe: groupe,
             nb_title: nbTitle,
-            style: style,
+            styleOne: styleOne,
             release_date: releaseDate,
-            created_at: createdAt,
+            image: image,
         };
         try{
             let {error} = await supabase
@@ -50,7 +48,6 @@ const AlbumAdd = ({ visibility, changeVisible }: Props) => {
             alert("Album added with success !");
         } catch(errorAdd){
             alert("An error has occured, you album have not been added !");
-            console.log(errorAdd);
         }
     }
 
@@ -89,7 +86,7 @@ const AlbumAdd = ({ visibility, changeVisible }: Props) => {
                         </div>                                                        
                         <div className='form-group'>
                             <label htmlFor="style">Style de musique</label>
-                            <input type="text" name='style' id='style' placeholder='style' onChange={(e) => {setStyle(e.currentTarget.value)}}/>
+                            <input type="text" name='styleOne' id='styleOne' placeholder='style' onChange={(e) => {setStyleOne(e.currentTarget.value)}}/>
                         </div>
                         <div className='form-group'>
                             <label htmlFor="nbtitle">Nombre de titres</label>
@@ -99,14 +96,18 @@ const AlbumAdd = ({ visibility, changeVisible }: Props) => {
                             <label htmlFor="release-date">Date de sortie</label>
                             <input type="date" name='releaseDate' id='release-date' onChange={(e) => setReleaseDate(e.currentTarget.value)}/>
                         </div>
-
+                        <div className='form-group'>
+                            <label htmlFor="release-date">URL Cover</label>
+                            <input type="text" name='image' id='image' onChange={(e) => setImage(e.currentTarget.value)}/>
+                        </div>
                         <button type="submit" onClick={
                             () => fillNewAlbum(
                                 albumName,
                                 groupe,
                                 nbTitle,
-                                style,
-                                releaseDate
+                                styleOne,
+                                releaseDate,
+                                image
                             )
                         }>  
                             valider

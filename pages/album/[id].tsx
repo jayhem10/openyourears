@@ -1,34 +1,33 @@
-import { Auth, ThemeSupa } from "@supabase/auth-ui-react";
-import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
+import { useSession, useSupabaseClient,User } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import Notation from "@/interfaces/notation";
 import Album from "@/interfaces/album";
 import Track from "@/interfaces/track";
 import { IndexLayout } from "@/layout";
+import NoteAdd from "@/components/Note/NoteAdd";
 
 type Props = {};
 
 export default function Note({}: Props) {
-  const session = useSession();
   const supabase = useSupabaseClient();
 
   const router = useRouter();
   const { id } = router.query;
 
-  const [notes, setNotes] = useState<Notation[]>();
+  const [notes, setNotes] = useState<Notation[]>([]);
+  const [note, setNote] = useState<Notation| null>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [album, setAlbum] = useState<Album>();
   const [tracks, setTracks] = useState<Track[]>();
+  const [user, setUser] = useState<any>();
 
+  const [average, setAverage] = useState<number>(0);
+
+  const [addingNote, setAddingNote] = useState<boolean>(false);
+  const [updatingNote, setUpdatingNote] = useState<boolean>(false);
+  const [alreadyNoted, setAlreadyNoted] = useState<boolean>(false);
   useEffect(() => {
-    const getNotes = async () => {
-      const { data, error } = await supabase
-        .from("notes")
-        .select()
-        .eq("album_id", id);
-      setNotes(data as Notation[]);
-    };
     const getAlbum = async () => {
       const { data, error } = await supabase
         .from("albums")
@@ -46,27 +45,88 @@ export default function Note({}: Props) {
       setTracks(data as Track[]);
       setIsLoading(false);
     };
+
+    const getCurrentUser = async () => {
+      const { data, error } = await supabase.auth.getUser();
+      setUser(data.user);
+    };
+
     if (id) {
       getNotes();
       getAlbum();
       getTracks();
+      getCurrentUser();
+      getNoteAverage();
     }
   }, [id]);
+
+  useEffect(() => {
+    if (notes) {
+      getNoteAverage();
+    }
+    if (user && notes) {
+      checkIsAlreadyNoted();    
+    }
+  }, [notes,user]);
+
+  const getNoteAverage = async () => {
+    var sum = 0;
+    let count = 0;
+    count = notes.length > 0 ? notes.length : 0;
+
+    notes?.forEach((element) => {
+      sum += element.note;
+    });
+    if (count > 0) {
+      setAverage(sum / count);
+    }
+  };
+
+  const getNotes = async () => {
+    const { data, error } = await supabase
+      .from("notes")
+      .select(
+        `*,
+        user:profiles(*)`
+      )
+      .eq("album_id", id);
+    setNotes(data as Notation[]);
+  };
+
+  const closeAddingNote = () => {
+    setAddingNote(false);
+    setUpdatingNote(false);
+    setNote(null);
+    getNotes();
+  };
+
+  const handleEdit = (note: SetStateAction<Notation | undefined>) => {
+    setNote(note as Notation);
+    setUpdatingNote(true);
+  };
+
+  const checkIsAlreadyNoted = async () => {
+    if (notes.some((e) => e.user_id === user.id)) {
+      setAlreadyNoted(true);
+    } else {
+      setAlreadyNoted(false);
+    }
+  };
 
   return (
     <>
       <IndexLayout>
-        {!isLoading && album && notes && (
+        {!isLoading && album && notes && user && (
           <>
             <a href={`/`} className="font-medium text-white">
-              <button className="m-2 bg-[#4547a8] hover:bg-[#4547a8] text-blue-50 dark:text-blue-100 font-semibold hover:text-white py-2 px-4 border border-[#4547a8] hover:border-transparent rounded">
+              <button className="m-2  hover:bg-[#4547a8] text-blue-50 dark:text-blue-100 font-semibold hover:text-white py-2 px-4 border border-[#4547a8] hover:border-transparent rounded">
                 back
               </button>
             </a>
             <div className="grid grid-cols-2 gap-4 mt-8">
               <div>
                 <div className="grid grid-cols-2 gap-4">
-                  <div className="mx-auto">
+                  <div className="mx-auto ">
                     <img width="250px" src={album.image} alt="vinyl" />
                   </div>
                   <div className="my-auto">
@@ -74,29 +134,39 @@ export default function Note({}: Props) {
                       {album.groupe}
                     </div>
                     <div className="text-xl mb-2">{album.name}</div>
+                    <div className="text-l mb-2">{album.nb_title} titres</div>
                     <p className="mb-2">{album.release_date}</p>
                     <div className=" pt-4 pb-2">
                       <span className=" bg-[#4547a8] rounded-full px-3 py-1 text-xs font-semibold text-blue-50 mr-2 mb-2 uppercase">
-                        {album.style}
+                        {album.styleOne}
                       </span>
                       <span className=" bg-[#4547a8] rounded-full px-3 py-1 text-xs font-semibold text-blue-50 mr-2 mb-2 uppercase">
-                        {album.style}
+                        {album.styleTwo}
                       </span>
                       <span className=" bg-[#4547a8] rounded-full px-3 py-1 text-xs font-semibold text-blue-50 mr-2 mb-2 uppercase">
-                        {album.style}
+                        {album.styleThree}
                       </span>
                     </div>
+                    <div className="text-l my-5 mr-2 mb-2 px-3 py-1 text-center border border-[#4547a8] rounded-full">
+                      Moyenne :{" "}
+                      {average == 0 ? "Aucune note" : average.toFixed(2)} / 10
+                    </div>
                     <div className="mt-10 flex justify-center">
-                      <a className="" href="">
-                        <svg
-                          width={25}
-                          xmlns="http://www.w3.org/2000/svg"
-                          viewBox="0 0 512 512"
-                          className=""
+                      {!alreadyNoted && (
+                        <button
+                          className="m-2 bg-[#4547a8] hover:bg-[#4547a8] text-blue-50 dark:text-blue-100 font-semibold hover:text-white py-2 px-4 border border-[#4547a8] hover:border-transparent rounded"
+                          onClick={() => setAddingNote(true)}
                         >
-                          <path d="M96 352V96c0-35.3 28.7-64 64-64H416c35.3 0 64 28.7 64 64V293.5c0 17-6.7 33.3-18.7 45.3l-58.5 58.5c-12 12-28.3 18.7-45.3 18.7H160c-35.3 0-64-28.7-64-64zM272 128c-8.8 0-16 7.2-16 16v48H208c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h48v48c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V256h48c8.8 0 16-7.2 16-16V208c0-8.8-7.2-16-16-16H320V144c0-8.8-7.2-16-16-16H272zm24 336c13.3 0 24 10.7 24 24s-10.7 24-24 24H136C60.9 512 0 451.1 0 376V152c0-13.3 10.7-24 24-24s24 10.7 24 24l0 224c0 48.6 39.4 88 88 88H296z" />
-                        </svg>
-                      </a>
+                          <svg
+                            width={25}
+                            xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 512 512"
+                            className=""
+                          >
+                            <path d="M96 352V96c0-35.3 28.7-64 64-64H416c35.3 0 64 28.7 64 64V293.5c0 17-6.7 33.3-18.7 45.3l-58.5 58.5c-12 12-28.3 18.7-45.3 18.7H160c-35.3 0-64-28.7-64-64zM272 128c-8.8 0-16 7.2-16 16v48H208c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h48v48c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V256h48c8.8 0 16-7.2 16-16V208c0-8.8-7.2-16-16-16H320V144c0-8.8-7.2-16-16-16H272zm24 336c13.3 0 24 10.7 24 24s-10.7 24-24 24H136C60.9 512 0 451.1 0 376V152c0-13.3 10.7-24 24-24s24 10.7 24 24l0 224c0 48.6 39.4 88 88 88H296z" />
+                          </svg>
+                        </button>
+                      )}
                     </div>
                   </div>
                 </div>
@@ -161,6 +231,9 @@ export default function Note({}: Props) {
                       <th scope="col" className="px-6 py-3">
                         User
                       </th>
+                      <th scope="col" className="px-6 py-3">
+                        Actions
+                      </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -170,7 +243,7 @@ export default function Note({}: Props) {
                           return (
                             <tr
                               key={note.id}
-                              className="bg-[#131430] border-b border-[#18122B] hover:bg-[#2e746c]"
+                              className="bg-[#131430] border-b border-[#18122B] hover:bg-[#7275f2]"
                             >
                               <th
                                 scope="row"
@@ -188,7 +261,20 @@ export default function Note({}: Props) {
                                 scope="row"
                                 className="px-6 py-4 font-medium text-blue-50 whitespace-nowrap dark:text-blue-100"
                               >
-                                USER
+                                {note.user.username}
+                              </td>
+                              <td
+                                scope="row"
+                                className="px-6 py-4 font-medium text-blue-50 whitespace-nowrap dark:text-blue-100"
+                              >
+                                {note.user_id == user.id && (
+                                  <button
+                                    onClick={() => handleEdit(note)}
+                                    className="m-2  hover:bg-[#4547a8] text-blue-50 dark:text-blue-100 font-semibold hover:text-white py-2 px-4 border border-[#4547a8] hover:border-transparent rounded"
+                                  >
+                                    Edit
+                                  </button>
+                                )}
                               </td>
                             </tr>
                           );
@@ -203,6 +289,23 @@ export default function Note({}: Props) {
             </div>
           </>
         )}
+        <div className="flex items-center justify-center  text-center overflow-hidden pt-8">
+          {addingNote && (
+            <NoteAdd
+              closeAddingNote={closeAddingNote}
+              albumId={album?.id}
+              user={user}
+            />
+          )}
+          {updatingNote && (
+            <NoteAdd
+              closeAddingNote={closeAddingNote}
+              albumId={album?.id}
+              user={user}
+              notation={note}
+            />
+          )}
+        </div>
       </IndexLayout>
     </>
   );

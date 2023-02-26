@@ -16,23 +16,28 @@ type ComponentWithPageLayout = AppProps & {
   };
 };
 
-function MyApp({ Component, pageProps }: ComponentWithPageLayout)  {
+function MyApp({ Component, pageProps }: ComponentWithPageLayout) {
   const [supabase] = useState(() => createBrowserSupabaseClient());
   return (
     <>
-    <SessionContextProvider
-      supabaseClient={supabase}
-      initialSession={pageProps.initialSession}
-    >
       {Component.PageLayout ? (
-        <Component.PageLayout>
-          <Component {...pageProps} />
-        </Component.PageLayout>
+        <SessionContextProvider
+          supabaseClient={supabase}
+          initialSession={pageProps.initialSession}
+        >
+          <Component.PageLayout>
+            <Component {...pageProps} />
+          </Component.PageLayout>
+        </SessionContextProvider>
       ) : (
-        <Component {...pageProps} />
-      )}    </SessionContextProvider>
+        <SessionContextProvider
+          supabaseClient={supabase}
+          initialSession={pageProps.initialSession}
+        >
+          <Component {...pageProps} />
+        </SessionContextProvider>
+      )}
     </>
-
   );
 }
 export default MyApp;

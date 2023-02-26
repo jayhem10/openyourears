@@ -5,7 +5,6 @@ import React from "react";
 
 export function IndexLayout({ children }: { children: React.ReactNode }) {
   const session = useSession();
-console.log(children)
   return (
     <>
       <Head>
@@ -14,9 +13,11 @@ console.log(children)
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <div className="bg-gradient-to-t from-indigo-500">
       <Navbar session={session} />
-      <div className="bg-gradient-to-t from-indigo-500 text-white h-screen snap-y snap-mandatory overflow-y-scroll overflow-x-hidden z-0 scrollbar scrollbar-track-[#0ef5e3] scrollbar-thumb-[#0ef5e3]/80">
+      <div className=" text-white h-screen snap-y snap-mandatory overflow-y-scroll overflow-x-hidden z-0 scrollbar scrollbar-track-[#0ef5e3] scrollbar-thumb-[#0ef5e3]/80">
         {children}
+      </div>
       </div>
     </>
   );

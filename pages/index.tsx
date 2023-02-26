@@ -1,10 +1,6 @@
-import Head from "next/head";
-import Image from "next/image";
 import Main from "@/components/Main";
 import { Auth, ThemeSupa } from "@supabase/auth-ui-react";
 import { useSession, useSupabaseClient } from "@supabase/auth-helpers-react";
-import type { NextPageWithLayout } from './_app'
-import { ReactElement } from "react";
 import { IndexLayout } from "@/layout";
 
 type Props = {};
@@ -18,7 +14,7 @@ type Props = {};
       {!session ? (
         <>
         <IndexLayout>
-          <div className="container" style={{ padding: "50px 0 100px 0" }}>
+          <div className="container " style={{ padding: "50px 0 100px 0" }}>
             <Auth
               providers={['google']}
               supabaseClient={supabase}
@@ -34,7 +30,6 @@ type Props = {};
         <IndexLayout>
             <Main />
         </IndexLayout>
-
         </>
       )}
       
