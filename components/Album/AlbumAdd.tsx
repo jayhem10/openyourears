@@ -16,7 +16,6 @@ const AlbumAdd = ({ visibility, changeVisible }: Props) => {
     const[styleOne, setStyleOne] = useState<string>("");
     const[image, setImage] = useState<string>("");
     const[releaseDate, setReleaseDate] = useState<string>("");
-    let[lastInsertedId, setLastInsertedId] = useState<number>(0)
 
     async function fillNewAlbum(
         albumName:string,
@@ -26,7 +25,7 @@ const AlbumAdd = ({ visibility, changeVisible }: Props) => {
         releaseDate:string,
         image:string,
     ){  
-        // await fetchLastAlbum();      
+        let lastInsertedId:number = await fetchLastAlbum();    
         const data = {
             id: ++lastInsertedId,
             name: albumName,
@@ -60,8 +59,9 @@ const AlbumAdd = ({ visibility, changeVisible }: Props) => {
         ;
 
         if(data){
-            setLastInsertedId(data[0].id);
+            return data[0].id;
         }
+        return 0;
     }
 
     useEffect(() => {
