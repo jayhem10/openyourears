@@ -1,13 +1,16 @@
-import React, { useState } from 'react';
+import Album from '@/interfaces/album';
+import React, { useEffect, useState } from 'react';
 
 type Props = {
     formLabel: string
     visibility: boolean
     changeVisible : any
-    fillNewAlbum: any
+    actionAlbum: any
+    isEdit: boolean
+    album: Album|undefined
 };
 
-const FormAlbum = ({formLabel, visibility, changeVisible, fillNewAlbum}: Props) => {
+const FormAlbum = ({formLabel, visibility, changeVisible, actionAlbum, isEdit, album}: Props) => {
 
     const[albumName, setAlbumName] = useState<string>("");
     const[groupe, setGroupe] = useState<string>("");
@@ -15,6 +18,12 @@ const FormAlbum = ({formLabel, visibility, changeVisible, fillNewAlbum}: Props) 
     const[styleOne, setStyleOne] = useState<string>("");
     const[image, setImage] = useState<string>("");
     const[releaseDate, setReleaseDate] = useState<string>("");
+
+    useEffect(() => {
+        if(isEdit){
+            // Récupérer un album d'id i afin de set les valeurs et les afficher e value
+        }
+    })
 
     return (
         <div className='modal'>
@@ -47,18 +56,21 @@ const FormAlbum = ({formLabel, visibility, changeVisible, fillNewAlbum}: Props) 
                         <label htmlFor="release-date">URL Cover</label>
                         <input type="text" name='image' id='image' onChange={(e) => setImage(e.currentTarget.value)}/>
                     </div>
-                    <button type="submit" onClick={
-                        () => fillNewAlbum(
-                            albumName,
-                            groupe,
-                            nbTitle,
-                            styleOne,
-                            releaseDate,
-                            image
-                        )
-                    }>  
-                        valider
-                    </button>
+                    {!isEdit &&
+                        <button type="submit" onClick={
+                            () => actionAlbum(
+                                albumName,
+                                groupe,
+                                nbTitle,
+                                styleOne,
+                                releaseDate,
+                                image
+                            )
+                            }
+                        >  
+                            valider
+                        </button>
+                    }
                 </div>
                 <div className='modal_footer'>
                     <a href="#" onClick={() => changeVisible(visibility)}>Fermer</a>
