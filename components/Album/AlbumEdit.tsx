@@ -32,8 +32,9 @@ const AlbumEdit = ({visibility, changeVisible, idAlbum}:Props) => {
     }
 
     useEffect(() => {
-        getAlbum(idAlbum);
-    })
+        if(visibility)
+            getAlbum(idAlbum);
+    }, [visibility]);
 
     return (
         <>
@@ -44,7 +45,7 @@ const AlbumEdit = ({visibility, changeVisible, idAlbum}:Props) => {
                     changeVisible={changeVisible}
                     actionAlbum={()=> {}}
                     isEdit={true}
-                    album = {album}
+                    album={album}
                 />
             }
         </>

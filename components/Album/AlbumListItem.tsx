@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from "react";
 import Album from "@/interfaces/album";
+import AlbumEdit from "./AlbumEdit";
 
 type Props = {
   album: Album;
@@ -8,6 +9,15 @@ type Props = {
 
 export default function AlbumListItem({ album }: Props) {
   const [addNote, setAddNote] = useState<boolean>(false);
+  const [editVisible, setEditVisible] = useState<boolean>(false)
+
+  const changeEditVisible = () => {
+    setEditVisible(!editVisible);
+  }
+
+  useEffect(() => {
+    console.log(editVisible)
+  },[editVisible])
 
   return (
     <>
@@ -35,7 +45,7 @@ export default function AlbumListItem({ album }: Props) {
             </td>
             <td className="px-6 py-4">
                 <a href="#" className="font-medium text-white ">
-                <button className="ml-2 bg-transparent  text-blue-50 dark:text-blue-100 font-semibold py-2 px-4 hover:bg-[#131430] rounded">
+                <button className="ml-2 bg-transparent  text-blue-50 dark:text-blue-100 font-semibold py-2 px-4 hover:bg-[#131430] rounded" onClick={()=>{changeEditVisible()}}>
                 Edit
                 </button>
                 </a> 
@@ -46,6 +56,7 @@ export default function AlbumListItem({ album }: Props) {
                 </a> 
             </td>
         </tr>
+        <AlbumEdit visibility={editVisible} changeVisible={changeEditVisible} idAlbum={album.id}/>
     </>
   );
 }
