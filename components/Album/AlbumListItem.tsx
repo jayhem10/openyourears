@@ -7,7 +7,7 @@ type Props = {
 };
 
 export default function AlbumListItem({ album }: Props) {
-  const [addNote, setAddNote] = useState<boolean>(false);
+  const [addReview, setAddReview] = useState<boolean>(false);
 
   return (
     <>

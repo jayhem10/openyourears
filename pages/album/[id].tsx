@@ -1,22 +1,26 @@
-import { useSession, useSupabaseClient,User } from "@supabase/auth-helpers-react";
+import {
+  useSession,
+  useSupabaseClient,
+  User,
+} from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 import { SetStateAction, useEffect, useState } from "react";
 import Notation from "@/interfaces/notation";
 import Album from "@/interfaces/album";
 import Track from "@/interfaces/track";
 import { IndexLayout } from "@/layout";
-import NoteAdd from "@/components/Note/NoteAdd";
+import ReviewAdd from "@/components/Review/ReviewAdd";
 
 type Props = {};
 
-export default function Note({}: Props) {
+export default function Review({}: Props) {
   const supabase = useSupabaseClient();
 
   const router = useRouter();
   const { id } = router.query;
 
-  const [notes, setNotes] = useState<Notation[]>([]);
-  const [note, setNote] = useState<Notation| null>();
+  const [reviews, setReviews] = useState<Notation[]>([]);
+  const [review, setReview] = useState<Notation | null>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [album, setAlbum] = useState<Album>();
   const [tracks, setTracks] = useState<Track[]>();
@@ -24,9 +28,10 @@ export default function Note({}: Props) {
 
   const [average, setAverage] = useState<number>(0);
 
-  const [addingNote, setAddingNote] = useState<boolean>(false);
-  const [updatingNote, setUpdatingNote] = useState<boolean>(false);
-  const [alreadyNoted, setAlreadyNoted] = useState<boolean>(false);
+  const [addingReview, setAddingReview] = useState<boolean>(false);
+  const [updatingReview, setUpdatingReview] = useState<boolean>(false);
+  const [alreadyReviewd, setAlreadyReviewd] = useState<boolean>(false);
+
   useEffect(() => {
     const getAlbum = async () => {
       const { data, error } = await supabase
@@ -52,73 +57,100 @@ export default function Note({}: Props) {
     };
 
     if (id) {
-      getNotes();
+      getReviews();
       getAlbum();
       getTracks();
       getCurrentUser();
-      getNoteAverage();
+      getReviewAverage();
     }
   }, [id]);
 
   useEffect(() => {
-    if (notes) {
-      getNoteAverage();
+    if (reviews&& album) {
+      getReviewAverage();
     }
-    if (user && notes) {
-      checkIsAlreadyNoted();    
+    if (user && reviews) {
+      checkIsAlreadyReviewd();
     }
-  }, [notes,user]);
+  }, [reviews, user]);
 
-  const getNoteAverage = async () => {
+  const getReviewAverage = async () => {
     var sum = 0;
     let count = 0;
-    count = notes.length > 0 ? notes.length : 0;
+    count = reviews.length > 0 ? reviews.length : 0;
 
-    notes?.forEach((element) => {
+    reviews?.forEach((element) => {
       sum += element.note;
     });
-    if (count > 0) {
-      setAverage(sum / count);
-    }
+    if (count > 0 && album?.nb_title > 0) {
+      console.log(sum, count, album?.nb_title)
+      setAverage((sum / count) / (album?.nb_title / 10));
+    }else(
+      setAverage(0)
+    )
   };
 
-  const getNotes = async () => {
+  const getReviews = async () => {
     const { data, error } = await supabase
-      .from("notes")
+      .from("reviews")
       .select(
         `*,
         user:profiles(*)`
       )
       .eq("album_id", id);
-    setNotes(data as Notation[]);
+    setReviews(data as Notation[]);
   };
 
-  const closeAddingNote = () => {
-    setAddingNote(false);
-    setUpdatingNote(false);
-    setNote(null);
-    getNotes();
+  const closeAddingReview = () => {
+    setAddingReview(false);
+    setUpdatingReview(false);
+    setReview(null);
+    getReviews();
   };
 
-  const handleEdit = (note: SetStateAction<Notation | undefined>) => {
-    setNote(note as Notation);
-    setUpdatingNote(true);
+  const handleEdit = (review: SetStateAction<Notation | undefined>) => {
+    setReview(review as Notation);
+    setUpdatingReview(true);
   };
 
-  const checkIsAlreadyNoted = async () => {
-    if (notes.some((e) => e.user_id === user.id)) {
-      setAlreadyNoted(true);
+  const checkIsAlreadyReviewd = async () => {
+    if (reviews.some((e) => e.user_id === user.id)) {
+      setAlreadyReviewd(true);
     } else {
-      setAlreadyNoted(false);
+      setAlreadyReviewd(false);
     }
   };
+
+  useEffect(() => {
+    if (average) {
+      updateAverage();
+    }
+  }, [average]);
+
+  async function updateAverage() {
+    const data = {
+      average: average,
+    };
+
+    try {
+      let { error } = await supabase
+        .from("albums")
+        .update([data])
+        .eq("id", album?.id);
+      if (error) throw error;
+      closeAddingReview();
+      // alert("Average updated with success !");
+    } catch (errorAdd) {
+      // alert("An error has occured, the average have not been updated !");
+    }
+  }
 
   return (
     <>
       <IndexLayout>
-        {!isLoading && album && notes && user && (
+        {!isLoading && album && reviews&& user && (
           <>
-            <a href={`/`} className="font-medium text-white">
+            <a href={`/albums`} className="font-medium text-white">
               <button className="m-2  hover:bg-[#4547a8] text-blue-50 dark:text-blue-100 font-semibold hover:text-white py-2 px-4 border border-[#4547a8] hover:border-transparent rounded">
                 back
               </button>
@@ -149,13 +181,13 @@ export default function Note({}: Props) {
                     </div>
                     <div className="text-l my-5 mr-2 mb-2 px-3 py-1 text-center border border-[#4547a8] rounded-full">
                       Moyenne :{" "}
-                      {average == 0 ? "Aucune note" : average.toFixed(2)} / 10
+                      {average == 0 ? "Aucune review" : average.toFixed(2)} / 10
                     </div>
                     <div className="mt-10 flex justify-center">
-                      {!alreadyNoted && (
+                      {!alreadyReviewd && (
                         <button
                           className="m-2 bg-[#4547a8] hover:bg-[#4547a8] text-blue-50 dark:text-blue-100 font-semibold hover:text-white py-2 px-4 border border-[#4547a8] hover:border-transparent rounded"
-                          onClick={() => setAddingNote(true)}
+                          onClick={() => setAddingReview(true)}
                         >
                           <svg
                             width={25}
@@ -237,39 +269,39 @@ export default function Note({}: Props) {
                     </tr>
                   </thead>
                   <tbody>
-                    {notes &&
-                      notes.map(
-                        (note: Notation, i: React.Key | null | undefined) => {
+                    {reviews&&
+                      reviews.map(
+                        (review: Notation, i: React.Key | null | undefined) => {
                           return (
                             <tr
-                              key={note.id}
+                              key={review.id}
                               className="bg-[#131430] border-b border-[#18122B] hover:bg-[#7275f2]"
                             >
                               <th
                                 scope="row"
                                 className="px-6 py-4 font-medium text-blue-50 whitespace-nowrap dark:text-blue-100"
                               >
-                                {note.note}
+                                {review.note}
                               </th>
                               <td
                                 scope="row"
                                 className="px-6 py-4 font-medium text-blue-50 whitespace-nowrap dark:text-blue-100"
                               >
-                                {note.comment}
+                                {review.comment}
                               </td>
                               <td
                                 scope="row"
                                 className="px-6 py-4 font-medium text-blue-50 whitespace-nowrap dark:text-blue-100"
                               >
-                                {note.user.username}
+                                {review.user.username}
                               </td>
                               <td
                                 scope="row"
                                 className="px-6 py-4 font-medium text-blue-50 whitespace-nowrap dark:text-blue-100"
                               >
-                                {note.user_id == user.id && (
+                                {review.user_id == user.id && (
                                   <button
-                                    onClick={() => handleEdit(note)}
+                                    onClick={() => handleEdit(review)}
                                     className="m-2  hover:bg-[#4547a8] text-blue-50 dark:text-blue-100 font-semibold hover:text-white py-2 px-4 border border-[#4547a8] hover:border-transparent rounded"
                                   >
                                     Edit
@@ -282,27 +314,27 @@ export default function Note({}: Props) {
                       )}
                   </tbody>
                 </table>
-                {notes?.length == 0 && (
-                  <p className="text-center mt-3">No Notes</p>
+                {reviews?.length == 0 && (
+                  <p className="text-center mt-3">No Reviews</p>
                 )}
               </div>
             </div>
           </>
         )}
         <div className="flex items-center justify-center  text-center overflow-hidden pt-8">
-          {addingNote && (
-            <NoteAdd
-              closeAddingNote={closeAddingNote}
-              albumId={album?.id}
+          {addingReview && (
+            <ReviewAdd
+              closeAddingReview={closeAddingReview}
+              album={album}
               user={user}
             />
           )}
-          {updatingNote && (
-            <NoteAdd
-              closeAddingNote={closeAddingNote}
-              albumId={album?.id}
+          {updatingReview && (
+            <ReviewAdd
+              closeAddingReview={closeAddingReview}
+              album={album}
               user={user}
-              notation={note}
+              notation={review}
             />
           )}
         </div>
