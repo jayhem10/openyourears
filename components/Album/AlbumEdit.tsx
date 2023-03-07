@@ -31,6 +31,28 @@ const AlbumEdit = ({visibility, changeVisible, idAlbum}:Props) => {
         }
     }
 
+    async function editAlbum(
+        albumName:string,
+        groupe:string,
+        nbTitle:number,
+        styleOne:string,
+        releaseDate:string,
+        image:string,
+    ){
+        const data = {
+            name: albumName,
+            groupe: groupe,
+            nb_title: nbTitle,
+            styleOne: styleOne,
+            release_date: releaseDate,
+            image: image
+        }
+
+        let {error} = await supabase
+            .from('album')
+            .upsert(data).eq('id', '19')
+    }
+
     useEffect(() => {
         if(visibility)
             getAlbum(idAlbum);
@@ -43,7 +65,7 @@ const AlbumEdit = ({visibility, changeVisible, idAlbum}:Props) => {
                     formLabel='Editer un album'
                     visibility={visibility}
                     changeVisible={changeVisible}
-                    actionAlbum={()=> {}}
+                    actionAlbum={editAlbum}
                     isEdit={true}
                     album={album}
                 />
