@@ -19,17 +19,16 @@ const FormAlbum = ({formLabel, visibility, changeVisible, actionAlbum, isEdit, a
     const[image, setImage] = useState<string>("");
     const[releaseDate, setReleaseDate] = useState<string>("");
 
-    // useEffect(() => {
-    //     if(album){
-    //         console.log(isEdit ? album?.name : "");
-    //         // setAlbumName(album.name);
-    //         setGroupe(album.groupe);
-    //         setNbTitle(album.nb_title);
-    //         setStyleOne(album.styleOne);
-    //         setImage(album.image);
-    //         setReleaseDate(album.release_date);
-    //     }
-    // },[visibility])
+    useEffect(() => {
+        if(album){
+            setAlbumName(album.name);
+            setGroupe(album.groupe);
+            setNbTitle(album.nb_title);
+            setStyleOne(album.styleOne);
+            setImage(album.image);
+            setReleaseDate(album.release_date);
+        }
+    },[visibility])
 
     return (
         <div className='modal'>
@@ -64,7 +63,8 @@ const FormAlbum = ({formLabel, visibility, changeVisible, actionAlbum, isEdit, a
                     </div>
                     {/* {!isEdit && */}
                         <button type="submit" onClick={
-                            () => actionAlbum(
+                            () => 
+                            actionAlbum(
                                 albumName,
                                 groupe,
                                 nbTitle,

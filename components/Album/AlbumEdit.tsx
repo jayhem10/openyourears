@@ -48,6 +48,8 @@ const AlbumEdit = ({visibility, changeVisible, idAlbum}:Props) => {
             image: image
         }
 
+        console.log(data);
+
         let {error} = await supabase
             .from('album')
             .upsert(data).eq('id', '19')
