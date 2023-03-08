@@ -12,56 +12,23 @@ const AlbumAdd = ({ visibility, changeVisible }: Props) => {
 
     const[album, setAlbum] = useState<Album>();
 
-    async function fillNewAlbum(
-        albumName:string,
-        groupe:string,
-        nbTitle:number,
-        styleOne:string,
-        releaseDate:string,
-        image:string,
-    ){  
-        let lastInsertedId:number = await fetchLastAlbum();    
-        const data = {
-            id: ++lastInsertedId,
-            name: albumName,
-            groupe: groupe,
-            nb_title: nbTitle,
-            styleOne: styleOne,
-            release_date: releaseDate,
-            image: image,
-        };
-        try{
-            let {error} = await supabase
-                .from('albums')
-                .insert([
-                    data
-                ])
-            ;
-            if(error) throw error;
+    // async function fetchLastAlbum(){
 
-            alert("Album added with success !");
-        } catch(errorAdd){
-            alert("An error has occured, you album have not been added !");
-        }
-    }
+    //     let { data, error } = await supabase
+    //         .from('albums')
+    //         .select('id')
+    //         .order('id', {ascending: false})
+    //     ;
 
-    async function fetchLastAlbum(){
+    //     if(data){
+    //         return data[0].id;
+    //     }
+    //     return 0;
+    // }
 
-        let { data, error } = await supabase
-            .from('albums')
-            .select('id')
-            .order('id', {ascending: false})
-        ;
-
-        if(data){
-            return data[0].id;
-        }
-        return 0;
-    }
-
-    useEffect(() => {
-        fetchLastAlbum();
-    })
+    // useEffect(() => {
+    //     fetchLastAlbum();
+    // })
 
     return (
         <>
@@ -70,7 +37,7 @@ const AlbumAdd = ({ visibility, changeVisible }: Props) => {
                     formLabel = "Ajouter un album"
                     visibility = {visibility}
                     changeVisible = {changeVisible}
-                    actionAlbum = {fillNewAlbum}
+                    actionAlbum = {()=>{}}
                     isEdit = {false}
                     album = {album}
                 />

@@ -1,4 +1,5 @@
 import Album from '@/interfaces/album';
+import supabase from '@/utils/supabase';
 import React, { useEffect, useState } from 'react';
 
 type Props = {
@@ -12,12 +13,12 @@ type Props = {
 
 const FormAlbum = ({formLabel, visibility, changeVisible, actionAlbum, isEdit, album}: Props) => {
 
-    const[albumName, setAlbumName] = useState<string>("");
-    const[groupe, setGroupe] = useState<string>("");
-    const[nbTitle,setNbTitle] = useState<number>(0);
-    const[styleOne, setStyleOne] = useState<string>("");
-    const[image, setImage] = useState<string>("");
-    const[releaseDate, setReleaseDate] = useState<string>("");
+    const[albumName, setAlbumName] = useState<string>(album ? album.name : "");
+    const[groupe, setGroupe] = useState<string>(album ? album.groupe : "");
+    const[nbTitle,setNbTitle] = useState<number>(album ? album.nb_title : 0);
+    const[styleOne, setStyleOne] = useState<string>(album ? album.styleOne : "");
+    const[image, setImage] = useState<string>(album ? album.image : "");
+    const[releaseDate, setReleaseDate] = useState<string>(album ? album.release_date : "2022-01-01");
 
     useEffect(() => {
         if(album){
@@ -29,6 +30,82 @@ const FormAlbum = ({formLabel, visibility, changeVisible, actionAlbum, isEdit, a
             setReleaseDate(album.release_date);
         }
     },[visibility])
+
+    async function editAlbum(
+        albumName:string,
+        groupe:string,
+        nbTitle:number,
+        styleOne:string,
+        releaseDate:string,
+        image:string,
+    ){
+        const data = {
+            name: albumName,
+            groupe: groupe,
+            nb_title: nbTitle,
+            styleOne: styleOne,
+            release_date: "2022-02-01",
+            // releaseDate,
+            image: image
+        }
+
+        console.log(data);
+
+        let {error} = await supabase
+            .from('albums')
+            .update([data]).eq('id', album?.id)
+    }
+
+    async function fillNewAlbum(
+        albumName:string,
+        groupe:string,
+        nbTitle:number,
+        styleOne:string,
+        releaseDate:string,
+        image:string,
+    ){  
+        let lastInsertedId:number = await fetchLastAlbum();    
+        const data = {
+            id: ++lastInsertedId,
+            name: albumName,
+            groupe: groupe,
+            nb_title: nbTitle,
+            styleOne: styleOne,
+            release_date: releaseDate,
+            image: image,
+        };
+        try{
+            let {error} = await supabase
+                .from('albums')
+                .insert([
+                    data
+                ])
+            ;
+            if(error) throw error;
+
+            alert("Album added with success !");
+        } catch(errorAdd){
+            alert("An error has occured, you album have not been added !");
+        }
+    }
+
+    async function fetchLastAlbum(){
+
+        let { data, error } = await supabase
+            .from('albums')
+            .select('id')
+            .order('id', {ascending: false})
+        ;
+
+        if(data){
+            return data[0].id;
+        }
+        return 0;
+    }
+
+    useEffect(() => {
+        fetchLastAlbum();
+    })
 
     return (
         <div className='modal'>
@@ -61,10 +138,10 @@ const FormAlbum = ({formLabel, visibility, changeVisible, actionAlbum, isEdit, a
                         <label htmlFor="release-date">URL Cover</label>
                         <input type="text" name='image' id='image' onChange={(e) => setImage(e.currentTarget.value)} defaultValue={album?.image}/>
                     </div>
-                    {/* {!isEdit && */}
+                    {!isEdit &&
                         <button type="submit" onClick={
                             () => 
-                            actionAlbum(
+                            fillNewAlbum(
                                 albumName,
                                 groupe,
                                 nbTitle,
@@ -76,7 +153,23 @@ const FormAlbum = ({formLabel, visibility, changeVisible, actionAlbum, isEdit, a
                         >  
                             valider
                         </button>
-                    {/* } */}
+                    }
+                    {isEdit &&
+                        <button type="submit" onClick={
+                            () => 
+                            editAlbum(
+                                albumName,
+                                groupe,
+                                nbTitle,
+                                styleOne,
+                                releaseDate,
+                                image
+                            )
+                            }
+                        >  
+                            Modifier
+                        </button>
+                    }
                 </div>
                 <div className='modal_footer'>
                     <a href="#" onClick={() => changeVisible(visibility)}>Fermer</a>
