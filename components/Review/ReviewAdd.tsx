@@ -1,62 +1,60 @@
+import Album from "@/interfaces/album";
 import Notation from "@/interfaces/notation";
 import supabase from "@/utils/supabase";
 import { User, useSession } from "@supabase/auth-helpers-react";
 import React, { useEffect, useState } from "react";
 
 type Props = {
-  closeAddingNote: any;
-  albumId?: number;
+  closeAddingReview: any;
+  album: Album;
   user: User;
   notation?: Notation;
 };
 
-const NoteAdd = ({ closeAddingNote, albumId, user, notation }: Props) => {
+const ReviewAdd = ({ closeAddingReview, album, user, notation }: Props) => {
   const [note, setNote] = useState<number>(notation ? notation?.note : 0);
   const [comment, setComment] = useState<string>(
     notation ? notation?.comment : ""
   );
   let [lastInsertedId, setLastInsertedId] = useState<number>(0);
 
-  async function fillNewNote(note: number, comment: string) {
-    // await fetchLastNote();
+  async function fillNewReview(review: number, comment: string) {
     const data = {
       id: ++lastInsertedId,
       note: note,
       comment: comment,
       user_id: user.id,
-      album_id: albumId,
+      album_id: album.id,
     };
     try {
-      let { error } = await supabase.from("notes").insert([data]);
+      let { error } = await supabase.from("reviews").insert([data]);
       if (error) throw error;
-      closeAddingNote();
-      alert("Note added with success !");
+      closeAddingReview();
+      alert("Review added with success !");
     } catch (errorAdd) {
-      alert("An error has occured, you note have not been added !");
-      console.log(errorAdd);
+      alert("An error has occured, you review have not been added !");
     }
   }
 
-  async function updateNote(note: number, comment: string) {
-    // await fetchLastNote();
+  async function updateReview(review: number, comment: string) {
     const data = {
       note: note,
       comment: comment,
     };
     try {
-      let { error } = await supabase.from("notes").update([data]).eq('id', notation?.id);
+      let { error } = await supabase.from("reviews").update([data]).eq('id', notation?.id);
       if (error) throw error;
-      closeAddingNote();
-      alert("Note updated with success !");
+      closeAddingReview();
+      alert("Review updated with success !");
     } catch (errorUpdate) {
-      alert("An error has occured, you note have not been updated !");
+      alert("An error has occured, you review have not been updated !");
       console.log(errorUpdate);
     }
   }
 
-  async function fetchLastNote() {
+  async function fetchLastReview() {
     let { data, error } = await supabase
-      .from("notes")
+      .from("reviews")
       .select("id")
       .order("id", { ascending: false });
     if (data) {
@@ -65,8 +63,18 @@ const NoteAdd = ({ closeAddingNote, albumId, user, notation }: Props) => {
   }
 
   useEffect(() => {
-    fetchLastNote();
+    fetchLastReview();
   });
+
+  useEffect(() => {
+    if (note && note > album.nb_title) {
+      setNote(album.nb_title);
+    }
+    if (note && note < 0) {
+      setNote(0);
+    }
+  }, [album.nb_title, note])
+  
 
   return (
     <div className="modal">
@@ -80,12 +88,12 @@ const NoteAdd = ({ closeAddingNote, albumId, user, notation }: Props) => {
         </div>
         <div className="modal_body">
           <div className="form-group">
-            <label htmlFor="noteName">Rate</label>
+            <label htmlFor="noteName">Rate on <b> {album.nb_title}</b> tracks</label>
             <input
               type="number"
-              name="note"
-              id="note"
-              placeholder="Note"
+              name="review"
+              id="review"
+              placeholder="Review"
               defaultValue={notation?.note}
               onChange={(e) => setNote(parseInt(e.currentTarget.value))}
             />
@@ -102,21 +110,21 @@ const NoteAdd = ({ closeAddingNote, albumId, user, notation }: Props) => {
             />
           </div>
           {notation == null ? (
-            <button type="submit" onClick={() => fillNewNote(note, comment)}>
+            <button type="submit" onClick={() => fillNewReview(note, comment)}>
               Submit
             </button>
           ) : (
-            <button type="submit" onClick={() => updateNote(note, comment)}>
+            <button type="submit" onClick={() => updateReview(note, comment)}>
               Update
             </button>
           )}
         </div>
         <div className="modal_footer py-4">
-          <button onClick={() => closeAddingNote()}>Close</button>
+          <button onClick={() => closeAddingReview()}>Close</button>
         </div>
       </div>
     </div>
   );
 };
 
-export default NoteAdd;
+export default ReviewAdd;

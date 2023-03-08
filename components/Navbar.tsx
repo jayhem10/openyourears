@@ -2,7 +2,12 @@ import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import Link from "next/link";
 import Router from "next/router";
 
-export default function Navbar({ session }) {
+type Props = {
+  session : any
+};
+
+
+export default function Navbar({ session }: Props) {
   const supabase = useSupabaseClient();
 
   const logout = () => {

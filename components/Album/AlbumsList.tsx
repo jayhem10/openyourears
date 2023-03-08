@@ -22,7 +22,7 @@ export default function AlbumsList({}: Props) {
   return (
     <>
       <div className="text-center my-3">Albums</div>
-      <div className="relative overflow-x-auto shadow-md sm:rounded-lg h-3/4">
+      <div className="relative overflow-x-auto shadow-md sm:rounded-lg h-3/5">
         <table className="w-full text-sm text-left text-blue-100 dark:text-blue-100 ">
           <thead className="text-xs text-white uppercase bg-[#131430] border-b border-[#00000] dark:text-white">
             <tr>

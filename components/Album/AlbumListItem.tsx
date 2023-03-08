@@ -8,7 +8,6 @@ type Props = {
 };
 
 export default function AlbumListItem({ album }: Props) {
-  const [addNote, setAddNote] = useState<boolean>(false);
   const [editVisible, setEditVisible] = useState<boolean>(false)
 
   const changeEditVisible = () => {

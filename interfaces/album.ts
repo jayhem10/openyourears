@@ -9,6 +9,7 @@ export default interface Album {
     styleThree:string,
     release_date:string,
     created_at:string,
-    image:string
+    image:string,
+    average:number
 };
 
