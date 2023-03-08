@@ -44,15 +44,16 @@ const AlbumEdit = ({visibility, changeVisible, idAlbum}:Props) => {
             groupe: groupe,
             nb_title: nbTitle,
             styleOne: styleOne,
-            release_date: releaseDate,
+            release_date: "2022-02-01",
+            // releaseDate,
             image: image
         }
 
         console.log(data);
 
         let {error} = await supabase
-            .from('album')
-            .upsert(data).eq('id', '19')
+            .from('albums')
+            .update([data]).eq('id', idAlbum)
     }
 
     useEffect(() => {
