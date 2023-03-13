@@ -40,13 +40,13 @@ const FormAlbum = ({formLabel, visibility, changeVisible, actionAlbum, isEdit, a
         image:string,
     ){
         const data = {
-            name: albumName,
-            groupe: groupe,
-            nb_title: nbTitle,
-            styleOne: styleOne,
+            name: "eee",
+            groupe: "bbb",
+            nb_title: 12,
+            styleOne: "eee",
             release_date: "2022-02-01",
             // releaseDate,
-            image: image
+            image: "https://u.cdn.sera.to/playlists/90/1262190/default_large_1543058039.png"
         }
 
         console.log(data);
@@ -141,6 +141,8 @@ const FormAlbum = ({formLabel, visibility, changeVisible, actionAlbum, isEdit, a
                     {!isEdit &&
                         <button type="submit" onClick={
                             () => 
+                            {
+                            console.log('eee');
                             fillNewAlbum(
                                 albumName,
                                 groupe,
@@ -149,6 +151,7 @@ const FormAlbum = ({formLabel, visibility, changeVisible, actionAlbum, isEdit, a
                                 releaseDate,
                                 image
                             )
+                            }
                             }
                         >  
                             valider

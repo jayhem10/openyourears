@@ -10,6 +10,7 @@ import Album from "@/interfaces/album";
 import Track from "@/interfaces/track";
 import { IndexLayout } from "@/layout";
 import ReviewAdd from "@/components/Review/ReviewAdd";
+import AlbumEdit from "@/components/Album/AlbumEdit";
 
 type Props = {};
 
@@ -31,6 +32,7 @@ export default function Review({}: Props) {
   const [addingReview, setAddingReview] = useState<boolean>(false);
   const [updatingReview, setUpdatingReview] = useState<boolean>(false);
   const [alreadyReviewd, setAlreadyReviewd] = useState<boolean>(false);
+  const [isVisible, setIsVisible] = useState<boolean>(false);
 
   useEffect(() => {
     const getAlbum = async () => {
@@ -145,6 +147,10 @@ export default function Review({}: Props) {
     }
   }
 
+  function changeIsVisible(){
+    setIsVisible(!isVisible);
+  }
+
   return (
     <>
       <IndexLayout>
@@ -184,6 +190,12 @@ export default function Review({}: Props) {
                       {average == 0 ? "Aucune review" : average.toFixed(2)} / 10
                     </div>
                     <div className="mt-10 flex justify-center">
+                      <button
+                          className="m-2 bg-[#4547a8] hover:bg-[#4547a8] text-blue-50 dark:text-blue-100 font-semibold hover:text-white py-2 px-4 border border-[#4547a8] hover:border-transparent rounded"
+                          onClick={() => changeIsVisible()}
+                        >
+                          Edit
+                      </button>
                       {!alreadyReviewd && (
                         <button
                           className="m-2 bg-[#4547a8] hover:bg-[#4547a8] text-blue-50 dark:text-blue-100 font-semibold hover:text-white py-2 px-4 border border-[#4547a8] hover:border-transparent rounded"
@@ -338,6 +350,7 @@ export default function Review({}: Props) {
             />
           )}
         </div>
+        <AlbumEdit visibility={isVisible} changeVisible={changeIsVisible} idAlbum={parseInt(id)}/>
       </IndexLayout>
     </>
   );
