@@ -34,16 +34,26 @@ export default function Review({}: Props) {
   const [alreadyReviewd, setAlreadyReviewd] = useState<boolean>(false);
   const [isVisible, setIsVisible] = useState<boolean>(false);
 
+  const getAlbum = async () => {
+    const { data, error } = await supabase
+      .from("albums")
+      .select()
+      .eq("id", id)
+      .single();
+    setAlbum(data);
+    setIsLoading(false);
+  };
+
   useEffect(() => {
-    const getAlbum = async () => {
-      const { data, error } = await supabase
-        .from("albums")
-        .select()
-        .eq("id", id)
-        .single();
-      setAlbum(data);
-      setIsLoading(false);
-    };
+    // const getAlbum = async () => {
+    //   const { data, error } = await supabase
+    //     .from("albums")
+    //     .select()
+    //     .eq("id", id)
+    //     .single();
+    //   setAlbum(data);
+    //   setIsLoading(false);
+    // };
     const getTracks = async () => {
       const { data, error } = await supabase
         .from("tracks")
@@ -149,6 +159,11 @@ export default function Review({}: Props) {
 
   function changeIsVisible(){
     setIsVisible(!isVisible);
+  }
+
+  function closeEditAlbum(){
+    changeIsVisible();
+    getAlbum();
   }
 
   return (
@@ -350,7 +365,14 @@ export default function Review({}: Props) {
             />
           )}
         </div>
-        <AlbumEdit visibility={isVisible} changeVisible={changeIsVisible} idAlbum={parseInt(id)}/>
+        <div className="flex flex-col items-center justify-center text-center text-white">
+          <AlbumEdit 
+            visibility={isVisible} 
+            changeVisible={changeIsVisible} 
+            editAlbum={album}
+            closeEditAlbum={closeEditAlbum}
+          />
+        </div>
       </IndexLayout>
     </>
   );

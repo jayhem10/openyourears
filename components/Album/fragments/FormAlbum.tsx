@@ -9,9 +9,10 @@ type Props = {
     actionAlbum: any
     isEdit: boolean
     album: Album|undefined
+    closePopUp: any
 };
 
-const FormAlbum = ({formLabel, visibility, changeVisible, actionAlbum, isEdit, album}: Props) => {
+const FormAlbum = ({formLabel, visibility, changeVisible, actionAlbum, isEdit, album, closePopUp}: Props) => {
 
     const[albumName, setAlbumName] = useState<string>(album ? album.name : "");
     const[groupe, setGroupe] = useState<string>(album ? album.groupe : "");
@@ -40,20 +41,29 @@ const FormAlbum = ({formLabel, visibility, changeVisible, actionAlbum, isEdit, a
         image:string,
     ){
         const data = {
-            name: "eee",
-            groupe: "bbb",
-            nb_title: 12,
-            styleOne: "eee",
+            name: albumName,
+            groupe: groupe,
+            nb_title: nbTitle,
+            styleOne: styleOne,
             release_date: "2022-02-01",
             // releaseDate,
-            image: "https://u.cdn.sera.to/playlists/90/1262190/default_large_1543058039.png"
+            image: image
         }
 
         console.log(data);
 
-        let {error} = await supabase
-            .from('albums')
-            .update([data]).eq('id', album?.id)
+        try{
+            let {error} = await supabase
+                .from('albums')
+                .update([data]).eq('id', album?.id)
+            if(error) throw error;
+
+            closePopUp();
+            alert("Your album has been edited with success");
+        }catch(errorEdit){
+            alert("An error has occured, your album has not been edited");
+        }
+
     }
 
     async function fillNewAlbum(
@@ -109,8 +119,8 @@ const FormAlbum = ({formLabel, visibility, changeVisible, actionAlbum, isEdit, a
 
     return (
         <div className='modal'>
-            <div className='modal_content'>
-                <div className='modal_header'>
+            <div className='modal_content border border-black'>
+                <div className='modal_header bg-[#4547a8]'>
                     <h1>{formLabel}</h1>
                 </div>
                 <div className='modal_body'>
@@ -139,7 +149,7 @@ const FormAlbum = ({formLabel, visibility, changeVisible, actionAlbum, isEdit, a
                         <input type="text" name='image' id='image' onChange={(e) => setImage(e.currentTarget.value)} defaultValue={album?.image}/>
                     </div>
                     {!isEdit &&
-                        <button type="submit" onClick={
+                        <button type="submit" className="bg-[#313378]" onClick={
                             () => 
                             {
                             console.log('eee');
@@ -158,7 +168,7 @@ const FormAlbum = ({formLabel, visibility, changeVisible, actionAlbum, isEdit, a
                         </button>
                     }
                     {isEdit &&
-                        <button type="submit" onClick={
+                        <button type="submit" className='bg-[#313378]' onClick={
                             () => 
                             editAlbum(
                                 albumName,
@@ -174,7 +184,7 @@ const FormAlbum = ({formLabel, visibility, changeVisible, actionAlbum, isEdit, a
                         </button>
                     }
                 </div>
-                <div className='modal_footer'>
+                <div className='modal_footer bg-[#4547a8]'>
                     <a href="#" onClick={() => changeVisible(visibility)}>Fermer</a>
                 </div>
             </div>

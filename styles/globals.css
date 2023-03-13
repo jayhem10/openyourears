@@ -439,7 +439,7 @@ button.primary,
 .modal{
   position: absolute;
   top: 10%;
-  z-index: 10;
+  z-index: 51;
 }
 
 .modal_content{
@@ -453,10 +453,11 @@ button.primary,
 }
 
 .modal_header h1{
-  color: #101010;
+  /* color: #101010; */
 }
 
 .modal_body{
+  background-color: var(--custom-bg-color);
   padding: 10px 30px;
 }
 
@@ -470,9 +471,13 @@ button.primary,
 }
 
 .modal_body button{
-  color: #101010;
+  /* color: #101010; */
+}
+
+.modal_footer{
+  height: 50px;
 }
 
 .modal_footer a{
-  color: #101010;
+  /* color: #101010; */
 }
