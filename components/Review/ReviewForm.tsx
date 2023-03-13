@@ -6,12 +6,12 @@ import React, { useEffect, useState } from "react";
 
 type Props = {
   closeAddingReview: any;
-  album: Album;
+  album?: Album;
   user: User;
   notation?: Notation;
 };
 
-const ReviewAdd = ({ closeAddingReview, album, user, notation }: Props) => {
+const ReviewForm = ({ closeAddingReview, album, user, notation }: Props) => {
   const [note, setNote] = useState<number>(notation ? notation?.note : 0);
   const [comment, setComment] = useState<string>(
     notation ? notation?.comment : ""
@@ -24,7 +24,7 @@ const ReviewAdd = ({ closeAddingReview, album, user, notation }: Props) => {
       note: note,
       comment: comment,
       user_id: user.id,
-      album_id: album.id,
+      album_id: album?.id,
     };
     try {
       let { error } = await supabase.from("reviews").insert([data]);
@@ -67,13 +67,13 @@ const ReviewAdd = ({ closeAddingReview, album, user, notation }: Props) => {
   });
 
   useEffect(() => {
-    if (note && note > album.nb_title) {
+    if (note && album &&note > album.nb_title) {
       setNote(album.nb_title);
     }
     if (note && note < 0) {
       setNote(0);
     }
-  }, [album.nb_title, note])
+  }, [album, note])
   
 
   return (
@@ -88,7 +88,7 @@ const ReviewAdd = ({ closeAddingReview, album, user, notation }: Props) => {
         </div>
         <div className="modal_body">
           <div className="form-group">
-            <label htmlFor="noteName">Rate on <b> {album.nb_title}</b> tracks</label>
+            <label htmlFor="noteName">Rate on <b> {album?.nb_title}</b> tracks</label>
             <input
               type="number"
               name="review"
@@ -127,4 +127,4 @@ const ReviewAdd = ({ closeAddingReview, album, user, notation }: Props) => {
   );
 };
 
-export default ReviewAdd;
+export default ReviewForm;
