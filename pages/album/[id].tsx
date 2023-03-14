@@ -9,8 +9,8 @@ import Notation from "@/interfaces/notation";
 import Album from "@/interfaces/album";
 import Track from "@/interfaces/track";
 import { IndexLayout } from "@/layout";
-import ReviewAdd from "@/components/Review/ReviewAdd";
 import AlbumEdit from "@/components/Album/AlbumEdit";
+import ReviewAForm from "@/components/Review/ReviewForm";
 
 type Props = {};
 
@@ -21,7 +21,7 @@ export default function Review({}: Props) {
   const { id } = router.query;
 
   const [reviews, setReviews] = useState<Notation[]>([]);
-  const [review, setReview] = useState<Notation | null>();
+  const [review, setReview] = useState<Notation>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [album, setAlbum] = useState<Album>();
   const [tracks, setTracks] = useState<Track[]>();
@@ -78,7 +78,7 @@ export default function Review({}: Props) {
   }, [id]);
 
   useEffect(() => {
-    if (reviews&& album) {
+    if (reviews && album) {
       getReviewAverage();
     }
     if (user && reviews) {
@@ -94,12 +94,10 @@ export default function Review({}: Props) {
     reviews?.forEach((element) => {
       sum += element.note;
     });
-    if (count > 0 && album?.nb_title > 0) {
-      console.log(sum, count, album?.nb_title)
-      setAverage((sum / count) / (album?.nb_title / 10));
-    }else(
-      setAverage(0)
-    )
+    if (count > 0 && album && album?.nb_title > 0) {
+      console.log(sum, count, album?.nb_title);
+      setAverage(sum / count / (album?.nb_title / 10));
+    } else setAverage(0);
   };
 
   const getReviews = async () => {
@@ -116,7 +114,7 @@ export default function Review({}: Props) {
   const closeAddingReview = () => {
     setAddingReview(false);
     setUpdatingReview(false);
-    setReview(null);
+    setReview(undefined);
     getReviews();
   };
 
@@ -169,7 +167,7 @@ export default function Review({}: Props) {
   return (
     <>
       <IndexLayout>
-        {!isLoading && album && reviews&& user && (
+        {!isLoading && album && reviews && user && (
           <>
             <a href={`/albums`} className="font-medium text-white">
               <button className="m-2  hover:bg-[#4547a8] text-blue-50 dark:text-blue-100 font-semibold hover:text-white py-2 px-4 border border-[#4547a8] hover:border-transparent rounded">
@@ -251,19 +249,19 @@ export default function Review({}: Props) {
                             <tr key={track.id} className="">
                               <th
                                 scope="row"
-                                className="px-6 py-4 font-medium whitespace-nowrap"
+                                className="px-6 py-4 font-medium"
                               >
                                 {track.piste}
                               </th>
                               <td
                                 scope="row"
-                                className="px-6 py-4 font-medium whitespace-nowrap"
+                                className="px-6 py-4 font-medium "
                               >
                                 {track.title}
                               </td>
                               <td
                                 scope="row"
-                                className="px-6 py-4 font-medium whitespace-nowrap"
+                                className="px-6 py-4 font-medium"
                               >
                                 {track.duration}
                               </td>
@@ -278,11 +276,12 @@ export default function Review({}: Props) {
                 )}
               </div>
               <div className="">
-                <table className="w-full text-sm text-left text-blue-100 dark:text-blue-100 mx-10">
+                <table className="w-full text-sm text-left text-blue-100 dark:text-blue-100">
                   <thead className="text-xs text-white uppercase bg-[#313378] border-b border-[#18122B] dark:text-white">
                     <tr>
                       <th scope="col" className="px-6 py-3">
                         Note
+                        <div className="text-center">/ {album.nb_title}</div>
                       </th>
                       <th scope="col" className="px-6 py-3">
                         Comment
@@ -296,7 +295,7 @@ export default function Review({}: Props) {
                     </tr>
                   </thead>
                   <tbody>
-                    {reviews&&
+                    {reviews &&
                       reviews.map(
                         (review: Notation, i: React.Key | null | undefined) => {
                           return (
@@ -306,25 +305,25 @@ export default function Review({}: Props) {
                             >
                               <th
                                 scope="row"
-                                className="px-6 py-4 font-medium text-blue-50 whitespace-nowrap dark:text-blue-100"
+                                className="px-6 py-4 font-medium text-blue-50  dark:text-blue-100 text-center"
                               >
                                 {review.note}
                               </th>
                               <td
                                 scope="row"
-                                className="px-6 py-4 font-medium text-blue-50 whitespace-nowrap dark:text-blue-100"
+                                className="px-6 py-4 font-medium text-blue-50  dark:text-blue-100"
                               >
                                 {review.comment}
                               </td>
                               <td
                                 scope="row"
-                                className="px-6 py-4 font-medium text-blue-50 whitespace-nowrap dark:text-blue-100"
+                                className="px-6 py-4 font-medium text-blue-50 dark:text-blue-100"
                               >
-                                {review.user.username}
+                                {review?.user?.username}
                               </td>
                               <td
                                 scope="row"
-                                className="px-6 py-4 font-medium text-blue-50 whitespace-nowrap dark:text-blue-100"
+                                className="px-6 py-4 font-medium text-blue-50 dark:text-blue-100"
                               >
                                 {review.user_id == user.id && (
                                   <button
@@ -350,20 +349,21 @@ export default function Review({}: Props) {
         )}
         <div className="flex items-center justify-center  text-center overflow-hidden pt-8">
           {addingReview && (
-            <ReviewAdd
+            <ReviewAForm
               closeAddingReview={closeAddingReview}
               album={album}
               user={user}
             />
           )}
           {updatingReview && (
-            <ReviewAdd
+            <ReviewAForm
               closeAddingReview={closeAddingReview}
               album={album}
               user={user}
               notation={review}
             />
           )}
+          {!isLoading && album == null && <div>This album does not exist</div>}
         </div>
         <div className="flex flex-col items-center justify-center text-center text-white">
           <AlbumEdit 

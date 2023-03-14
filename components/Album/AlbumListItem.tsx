@@ -24,7 +24,7 @@ export default function AlbumListItem({ album }: Props) {
             <th className="px-6 py-4">
                 <img src={album.image} alt=""  width={80}/>
             </th>
-            <td scope="row" className="px-6 py-4 font-medium text-blue-50 whitespace-nowrap dark:text-blue-100">
+            <td scope="row" className="px-6 py-4 font-medium text-blue-50 dark:text-blue-100">
                 {album.name}
             </td>
             <td className="px-6 py-4">

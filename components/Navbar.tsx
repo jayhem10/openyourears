@@ -17,7 +17,7 @@ export default function Navbar({ session }: Props) {
 
   return (
     <nav className="px-2 border-gray-200 dark:border-gray-700 sticky top-0 z-50 bg-[#313378]">
-      <div className="container flex flex-wrap items-center justify-between mx-auto">
+      <div className="flex flex-wrap items-center justify-between mx-auto">
         <div className="hidden w-full md:block md:w-auto" id="navbar-dropdown">
           <ul className="flex flex-col p-4 mt-4 border border-gray-100 rounded-lg md:flex-row md:space-x-8 md:mt-0 md:text-sm md:font-medium md:border-0 dark:border-gray-700">
             <li>

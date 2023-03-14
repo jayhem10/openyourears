@@ -23,31 +23,31 @@ export default function AlbumsList({}: Props) {
     <>
       <div className="text-center my-3">Albums</div>
       <div className="relative overflow-x-auto shadow-md sm:rounded-lg h-3/5">
-        <table className="w-full text-sm text-left text-blue-100 dark:text-blue-100 ">
+        <table className="table table-fit max-w-screen-2xl text-sm text-left text-blue-100 dark:text-blue-100 ">
           <thead className="text-xs text-white uppercase bg-[#131430] border-b border-[#00000] dark:text-white">
             <tr>
-            <th scope="col" className="px-6 py-3">
+            <th  className="px-6 py-3">
                 Pochette
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th  className="px-6 py-3">
                 Album
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th className="px-6 py-3">
                 Band
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th className="px-6 py-3">
                 Style
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th className="px-6 py-3">
                 Nb Title
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th className="px-6 py-3">
                 Release Date
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th className="px-6 py-3">
                 Added at
               </th>
-              <th scope="col" className="px-6 py-3">
+              <th className="px-6 py-3">
                 Actions
               </th>
             </tr>
