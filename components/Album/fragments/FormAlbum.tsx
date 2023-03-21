@@ -45,7 +45,7 @@ const FormAlbum = ({formLabel, visibility, changeVisible, actionAlbum, isEdit, a
             groupe: groupe,
             nb_title: nbTitle,
             styleOne: styleOne,
-            release_date: "2022-02-01",
+            release_date: releaseDate,
             // releaseDate,
             image: image
         }
