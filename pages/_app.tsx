@@ -25,9 +25,7 @@ function MyApp({ Component, pageProps }: ComponentWithPageLayout) {
           supabaseClient={supabase}
           initialSession={pageProps.initialSession}
         >
-          <Component.PageLayout>
-            <Component {...pageProps} />
-          </Component.PageLayout>
+          <Component.PageLayout {...pageProps} />
         </SessionContextProvider>
       ) : (
         <SessionContextProvider

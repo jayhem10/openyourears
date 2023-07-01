@@ -83,7 +83,6 @@ export default function Review({}: Props) {
       sum += element.note;
     });
     if (count > 0 && album && album?.nb_title > 0) {
-      console.log(sum, count, album?.nb_title);
       setAverage(sum / count / (album?.nb_title / 10));
     } else setAverage(0);
   };

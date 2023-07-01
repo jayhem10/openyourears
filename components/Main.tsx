@@ -138,7 +138,6 @@ export default function Main({}: Props) {
         <div className="w-full text-center  flex space-x-5 overflow-x-scroll p-10 snap-x snap-mandatory scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-[#7275f2]/80">
           {/* {jobs.filter(p => p.locale === locale).map((job, i) => { */}
           {reviews && reviews?.map((review, i) => {
-            {console.log(review)}
             return (
               <article
                 key={review.id}
