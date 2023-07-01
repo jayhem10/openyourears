@@ -231,7 +231,7 @@ export default function Main({}: Props) {
                   <p className="font-bold text-l mt-1">{bestAlbum.groupe}</p>
                 </div>
                 <footer className="h-10 uppercase pt-5 text-gray-300">
-                  {bestAlbum.average}
+                  {bestAlbum.average.toFixed(2)}
                 </footer>
               </article>
             );

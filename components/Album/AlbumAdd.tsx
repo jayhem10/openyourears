@@ -77,7 +77,7 @@ const AlbumAdd = ({ visibility, changeVisible }: Props) => {
                     </div>
                     <div className='modal_body'>
                         <div className='form-group'>
-                            <label htmlFor="albumName">Nom de l'album</label>
+                            <label htmlFor="albumName">Nom de l&apos;album</label>
                             <input type="text" name='albumName' id='albumName' placeholder='Album name' onChange={(e) => setAlbumName(e.currentTarget.value)}/>
                         </div>  
                         <div className='form-group'>

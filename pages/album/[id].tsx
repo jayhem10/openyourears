@@ -142,12 +142,13 @@ export default function Review({}: Props) {
       // alert("An error has occured, the average have not been updated !");
     }
   }
-  console.log(review?.user.username);
   return (
     <>
       <IndexLayout>
         {!isLoading && album && reviews && user && (
-          <>
+            <div className="albumCover" style={{ 
+              backgroundImage: `url(${album.image})` 
+            }}>
             <a href={`/albums`} className="font-medium text-white">
               <button className="m-2  hover:bg-[#4547a8] text-blue-50 dark:text-blue-100 font-semibold hover:text-white py-2 px-4 border border-[#4547a8] hover:border-transparent rounded">
                 back
@@ -318,7 +319,7 @@ export default function Review({}: Props) {
                 )}
               </div>
             </div>
-          </>
+          </div>
         )}
         <div className="flex items-center justify-center  text-center overflow-hidden pt-8">
           {addingReview && (
