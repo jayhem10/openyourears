@@ -146,9 +146,10 @@ export default function Review({}: Props) {
     <>
       <IndexLayout>
         {!isLoading && album && reviews && user && (
-            <div className="albumCover" style={{ 
-              backgroundImage: `url(${album.image})` 
-            }}>
+            // <div className="albumCover" style={{ 
+            //   backgroundImage: `url(${album.image})` 
+            // }}>
+            <div>
             <a href={`/albums`} className="font-medium text-white">
               <button className="m-2  hover:bg-[#4547a8] text-blue-50 dark:text-blue-100 font-semibold hover:text-white py-2 px-4 border border-[#4547a8] hover:border-transparent rounded">
                 back

@@ -66,7 +66,6 @@ export default function Main({}: Props) {
       .not("average", "is", null);
     setBestAlbums(data as Album[]);
   };
-
   return (
     <>
       <div className="h-fit ">
@@ -138,12 +137,13 @@ export default function Main({}: Props) {
         <h2 className="pl-8 pt-10">Last reviews</h2>
         <div className="w-full text-center  flex space-x-5 overflow-x-scroll p-10 snap-x snap-mandatory scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-[#7275f2]/80">
           {/* {jobs.filter(p => p.locale === locale).map((job, i) => { */}
-          {reviews?.map((review, i) => {
+          {reviews && reviews?.map((review, i) => {
+            {console.log(review)}
             return (
               <article
                 key={review.id}
                 className="flex flex-col h-72 justify-between w-48 rounded-lg items-center  flex-shrink-0 py-5 snap-center bg-[#292929] hover:opacity-100 opacity-40 cursor-pointer transition-opacity duration-200"
-                onClick={() => router.push(`album/${review.album.id}`)}
+                onClick={() => router.push(`album/${review?.album?.id}`)}
               >
                 <motion.img
                   initial={{
@@ -161,7 +161,7 @@ export default function Main({}: Props) {
                     once: true,
                   }}
                   className="w-24 object-contain object-center"
-                  src={review.album.image}
+                  src={review.album?.image}
                   alt="logo"
                 />
                 <div className="px-0 md:px-5">
@@ -171,11 +171,11 @@ export default function Main({}: Props) {
                       : review.comment}
                   </h4>
                   <p className="font-bold text-l mt-1">
-                    {review.note} / {review.album.nb_title}
+                    {review.note} / {review.album?.nb_title}
                   </p>
                 </div>
                 <footer className="h-10 py-5 text-gray-300">
-                  by {review.user.username}
+                  by {review.user?.username}
                 </footer>
               </article>
             );
