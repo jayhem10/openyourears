@@ -6,6 +6,7 @@ import React, { useEffect, useState } from "react";
 import Notation from "@/interfaces/notation";
 import { motion } from "framer-motion";
 import { useRouter } from "next/router";
+import Loader from "./Ui/Loader";
 
 type Props = {};
 
@@ -14,11 +15,15 @@ export default function Main({}: Props) {
   const session = useSession();
   const router = useRouter();
 
-  const [visible, setVisibility] = useState<boolean>(false);
   const [user, setUser] = useState<any>();
   const [albums, setAlbums] = useState<Album[]>();
   const [reviews, setReviews] = useState<Notation[]>();
   const [bestAlbums, setBestAlbums] = useState<Album[]>();
+
+  const [isLoadingAlbums, setIsLoadingAlbums] = useState<boolean>(true);
+  const [isLoadingReviews, setIsLoadingReviews] = useState<boolean>(true);
+  const [isLoadingBestAlbums, setIsLoadingBestAlbums] = useState<boolean>(true);
+
 
   useEffect(() => {
     const getCurrentUser = async () => {
@@ -42,6 +47,7 @@ export default function Main({}: Props) {
       .range(0, 9)
       .order("id", { ascending: false });
     setAlbums(data as Album[]);
+    setIsLoadingAlbums(false);
   };
 
   const getLastReviews = async () => {
@@ -55,6 +61,7 @@ export default function Main({}: Props) {
       .range(0, 9)
       .order("id", { ascending: false });
     setReviews(data as Notation[]);
+    setIsLoadingReviews(false);
   };
 
   const getBestAlbums = async () => {
@@ -65,7 +72,9 @@ export default function Main({}: Props) {
       .order("average", { ascending: false })
       .not("average", "is", null);
     setBestAlbums(data as Album[]);
+    setIsLoadingBestAlbums(false);
   };
+
   return (
     <>
       <div className="h-fit ">
@@ -80,7 +89,6 @@ export default function Main({}: Props) {
 
         <h2 className="pl-8">Last albums</h2>
         <div className="w-full text-center  flex space-x-5 overflow-x-scroll p-10 snap-x snap-mandatory scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-[#7275f2]/80">
-          {/* {jobs.filter(p => p.locale === locale).map((job, i) => { */}
           {albums?.map((album, i) => {
             return (
               <article
@@ -121,6 +129,7 @@ export default function Main({}: Props) {
               </article>
             );
           })}
+          {!isLoadingAlbums && albums &&
           <article
             className="h-92 my-auto w-48 rounded-lg items-center flex-shrink-0 py-5  bg-[#292929] hover:opacity-100 opacity-40 cursor-pointer transition-opacity duration-200"
             onClick={() => router.push(`albums`)}
@@ -132,6 +141,8 @@ export default function Main({}: Props) {
               See all albums
             </footer>
           </article>
+          }
+          {isLoadingAlbums && < Loader/>}
         </div>
 
         <h2 className="pl-8 pt-10">Last reviews</h2>
@@ -179,6 +190,7 @@ export default function Main({}: Props) {
               </article>
             );
           })}
+          {!isLoadingReviews && reviews &&
           <article
             className="h-92 my-auto w-48 rounded-lg items-center  flex-shrink-0 py-5 bg-[#292929] hover:opacity-100 opacity-40 cursor-pointer transition-opacity duration-200"
             onClick={() => router.push(`albums`)}
@@ -190,12 +202,13 @@ export default function Main({}: Props) {
               See all albums
             </footer>
           </article>
+          }
+          {isLoadingReviews && < Loader/>}
         </div>
 
         <h2 className="pl-8 pt-10">Best ranked albums</h2>
         <div className="w-full text-center mb-10 flex space-x-5 overflow-x-scroll p-10 snap-x snap-mandatory scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-[#7275f2]/80">
-          {/* {jobs.filter(p => p.locale === locale).map((job, i) => { */}
-          {bestAlbums?.map((bestAlbum, i) => {
+          {!isLoadingBestAlbums && bestAlbums?.map((bestAlbum, i) => {
             return (
               <article
                 key={bestAlbum.id}
@@ -235,6 +248,7 @@ export default function Main({}: Props) {
               </article>
             );
           })}
+          {!isLoadingBestAlbums && albums &&
           <article
             className="h-92 my-auto w-48 rounded-lg items-center flex-shrink-0 py-5 bg-[#292929] hover:opacity-100 opacity-40 cursor-pointer transition-opacity duration-200"
             onClick={() => router.push(`albums`)}
@@ -246,6 +260,8 @@ export default function Main({}: Props) {
               See all albums
             </footer>
           </article>
+          }
+          {isLoadingBestAlbums && < Loader/>}
         </div>
       </div>
     </>

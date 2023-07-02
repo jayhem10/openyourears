@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import Link from "next/link";
 import Router from "next/router";
@@ -32,6 +33,7 @@ export default function Navbar({ session }: Props) {
                 </span>
               </Link>
             </li>
+            {session && 
             <li>
               <Link
                 href="/albums"
@@ -41,6 +43,7 @@ export default function Navbar({ session }: Props) {
                 Albums
               </Link>
             </li>
+            }
           </ul>
         </div>
         {session && (
