@@ -11,41 +11,17 @@ export default function AlbumListItem({ album }: Props) {
 
   return (
     <>
-      <tr className="bg-[#4547a8] border-b border-[#00000] hover:bg-[#7275f2]">
-            <th className="px-6 py-4">
-                <img src={album.image} alt=""  width={80}/>
-            </th>
-            <td scope="row" className="px-6 py-4 font-medium text-blue-50 dark:text-blue-100">
-                {album.name}
-            </td>
-            <td className="px-6 py-4">
-                {album.groupe}
-            </td>
-            <td className="px-6 py-4">
-                {album.styleOne}
-            </td>
-            <td className="px-6 py-4">
-                {album.nb_title}
-            </td>
-            <td className="px-6 py-4">
-                {album.release_date}
-            </td>
-            <td className="px-6 py-4">
-                {album.created_at}
-            </td>
-            <td className="px-6 py-4">
-                <a href="#" className="font-medium text-white ">
-                <button className="ml-2 bg-transparent  text-blue-50 dark:text-blue-100 font-semibold py-2 px-4 hover:bg-[#131430] rounded">
-                Edit
-                </button>
-                </a> 
-                <a href={`/album/${album.id}`} className="font-medium text-white">
-                <button className="ml-2 bg-transparent  text-blue-50 dark:text-blue-100 font-semibold py-2 px-4  hover:bg-[#131430] rounded">
-                +
-                </button>
-                </a> 
-            </td>
-        </tr>
+      <a href={`/album/${album.id}`} className="font-medium text-white border-2 border-indigo-500/50 ">
+        <div className="w-64 h-64 bg-red-100 relative border-white rounded">
+          <div className="absolute inset-0 bg-cover bg-center z-0">
+            <img src={album.image} alt="" />
+          </div>
+          <div className="opacity-0 hover:opacity-100 duration-300 absolute inset-0 z-10  text-xl text-white font-semibold hover:backdrop-blur-sm flex items-center justify-center">
+            <div className="">{album.name}</div>
+            {/* <div className="flex items-center">{album.groupe}</div> */}
+          </div>
+        </div>
+      </a>
     </>
   );
 }

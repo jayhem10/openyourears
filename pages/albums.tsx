@@ -17,8 +17,8 @@ export default function Albums({  }: Props) {
   }
   return (
     <IndexLayout>
-      <div className="h-screen flex flex-col items-center justify-center  text-center overflow-hidden">
-        <button><a href="#" onClick={() => changeVisible()}>add Album</a></button>
+      <div className=" flex flex-col items-center justify-center text-center overflow-hidden">
+        <button className="my-5" onClick={() => changeVisible()}><a href="#" >add Album</a></button>
         <AlbumAdd visibility={visible} changeVisible={changeVisible} />
         <AlbumsList/>
       </div>

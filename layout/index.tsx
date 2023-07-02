@@ -14,10 +14,10 @@ export function IndexLayout({ children }: { children: React.ReactNode }) {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <Navbar session={session} />
-      <div className="text-white h-screen snap-y snap-mandatory overflow-y-scroll overflow-x-hidden scrollbar scrollbar-track-[#0ef5e3] scrollbar-thumb-[#0ef5e3]/80">
+      <div className="child-view text-white snap-y snap-mandatory overflow-y-scroll overflow-x-hidden scrollbar scrollbar-track-[#0ef5e3] scrollbar-thumb-[#0ef5e3]/80">
         {children}
       </div>
-        <footer className="footer footer-center p-4 bg-base-300 flex justify-center border-[#0ef5e3] text-white text-center">
+        <footer className="footer footer-center p-4  mt-3">
             <p className="text-sm">Copyright © 2023 - All right reserved by OpenYourEars</p>
       </footer>
     </>

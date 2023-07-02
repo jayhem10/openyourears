@@ -72,8 +72,8 @@ export default function Main({}: Props) {
         <div className=" flex flex-col items-center justify-center  text-center overflow-hidden pt-8">
           {user && (
             <h1 className="mt-5 text-2xl">
-              Bienvenue{" "}
-              <span className="uppercase text-[#313378]">{user.username}</span>
+              Welcome {" "}
+              <span className="uppercase text-[#3e419a]">{user.username}</span>
             </h1>
           )}
         </div>
@@ -85,7 +85,7 @@ export default function Main({}: Props) {
             return (
               <article
                 key={album.id}
-                className="flex flex-col h-72 justify-between w-48 rounded-lg items-center  flex-shrink-0 py-5 snap-center bg-[#292929] hover:opacity-100 opacity-40 cursor-pointer transition-opacity duration-200"
+                className="flex flex-col h-72 justify-between w-48 rounded-lg items-center  flex-shrink-0 py-5 snap-center bg-[#292929] hover:opacity-100 opacity-60 cursor-pointer transition-opacity duration-200"
                 onClick={() => router.push(`album/${album.id}`)}
               >
                 <motion.img
@@ -103,7 +103,7 @@ export default function Main({}: Props) {
                   viewport={{
                     once: true,
                   }}
-                  className="w-24 object-contain object-center"
+                  className="w-32 object-contain object-center"
                   src={album.image}
                   alt="logo"
                 />
@@ -159,7 +159,7 @@ export default function Main({}: Props) {
                   viewport={{
                     once: true,
                   }}
-                  className="w-24 object-contain object-center"
+                  className="w-32 object-contain object-center"
                   src={review.album?.image}
                   alt="logo"
                 />
@@ -217,7 +217,7 @@ export default function Main({}: Props) {
                   viewport={{
                     once: true,
                   }}
-                  className="w-24 object-contain object-center"
+                  className="w-32 object-contain object-center"
                   src={bestAlbum.image}
                   alt="logo"
                 />
@@ -247,7 +247,6 @@ export default function Main({}: Props) {
             </footer>
           </article>
         </div>
-        <div className="my-16">.</div>
       </div>
     </>
   );

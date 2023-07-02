@@ -10,6 +10,7 @@ import Album from "@/interfaces/album";
 import Track from "@/interfaces/track";
 import { IndexLayout } from "@/layout";
 import ReviewAForm from "@/components/Review/ReviewForm";
+import Loader from "@/components/Ui/Loader";
 
 type Props = {};
 
@@ -338,6 +339,9 @@ export default function Review({}: Props) {
             />
           )}
           {!isLoading && album == null && <div>This album does not exist</div>}
+          {isLoading && (
+        <Loader/>
+      )}
         </div>
       </IndexLayout>
     </>

@@ -46,6 +46,7 @@ const AlbumAdd = ({ visibility, changeVisible }: Props) => {
             if(error) throw error;
 
             alert("Album added with success !");
+            changeVisible(false)
         } catch(errorAdd){
             alert("An error has occured, you album have not been added !");
         }
