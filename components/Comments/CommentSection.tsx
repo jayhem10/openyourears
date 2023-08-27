@@ -5,21 +5,23 @@ import CommentItem from "./CommentItem";
 import Comment from "@/interfaces/comment";
 import { useRouter } from "next/router";
 import { useSupabaseClient, useUser } from "@supabase/auth-helpers-react";
+import Loader from "../Ui/Loader";
 
 type Props = {};
 
 export default function CommentSection({}: Props) {
   const router = useRouter();
   const { id } = router.query;
-  const [isLoading, setIsLoading] = useState<boolean>(true);
   const supabase = useSupabaseClient();
   const user = useUser();
 
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   const [comments, setComments] = useState<Comment[] | null>([]);
 
   useEffect(() => {
     if (id) {
       getComments();
+      setIsLoading(false);
     }
   }, [id]);
 
@@ -34,17 +36,17 @@ export default function CommentSection({}: Props) {
       .eq("album_id", id)
       .order("created_at", { ascending: false });
       setComments(data);
-      setIsLoading(false);
   };
 
   return (
     <>
+    {!isLoading ?
       <section className=" py-8 lg:py-16">
         <div className="max-w-3xl mx-auto px-4">
           <div className="flex justify-between items-center mb-6">
             {/* component total comments */}
             <h2 className="text-lg lg:text-2xl font-bold text-white">
-              Discussion (20)
+              Discussion ({comments?.length})
             </h2>
             {/* component total comments END */}
           </div>
@@ -56,14 +58,14 @@ export default function CommentSection({}: Props) {
           {/* component add a  comment */}
 
           {/* component list  comments */}
-          {comments &&
-          !isLoading &&
-          comments.map((comment: Comment, i: React.Key | null | undefined) => {
-            return <CommentItem key={i} comment={comment} />;
+          {comments && !isLoading && comments.map((comment: Comment, i: React.Key | null | undefined) => {
+            return <CommentItem key={i} comment={comment} getComments={getComments}/>;
           })}
-          
         </div>
       </section>
+      :
+      <Loader/>
+      }
     </>
   );
 }

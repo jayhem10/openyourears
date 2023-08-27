@@ -1,3 +1,5 @@
+"use client"
+
 /* eslint-disable @next/next/no-img-element */
 import Comment from "@/interfaces/comment";
 import React from "react";
@@ -5,13 +7,30 @@ import { Fragment } from "react";
 import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import dayjs from "dayjs";
+import supabase from "@/utils/supabase";
+import { toast } from "react-toastify";
 type Props = {
   comment: Comment;
+  getComments: any
 };
 
-export default function CommentItem({ comment }: Props) {
+  export default function CommentItem({ comment,getComments }: Props) {
   function classNames(...classes: string[]) {
     return classes.filter(Boolean).join(" ");
+  }
+
+  async function removeComment(
+  ) {
+    try {
+      const { error } = await supabase
+      .from('comments')
+      .delete()
+      .eq('id', comment.id)
+      toast.success("Your comment have been removed !");
+      getComments();
+    } catch (errorAdd) {
+      toast.error("An error has occured, your comment have not been removed !");
+    }
   }
 
   return (
@@ -69,20 +88,20 @@ export default function CommentItem({ comment }: Props) {
                           "block px-4 py-2 text-sm"
                         )}
                       >
-                        Edit
+                        Edit ( incoming soon )
                       </a>
                     )}
                   </Menu.Item>
                   <Menu.Item>
                     {({ active }) => (
                       <a
-                        href="#"
                         className={classNames(
                           active
                             ? "bg-gray-100 text-gray-900"
                             : "text-gray-700",
                           "block px-4 py-2 text-sm"
                         )}
+                        onClick={() => removeComment()}
                       >
                         Remove
                       </a>

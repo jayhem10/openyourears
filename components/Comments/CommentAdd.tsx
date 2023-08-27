@@ -60,6 +60,7 @@ export default function CommentAdd({getComments, userId, albumId}: Props) {
             id="comment"
             name="comment"
             rows={6}
+            value={commentary}
             className="px-0 w-full text-sm text-gray-900 border-0 focus:ring-0 focus:outline-none dark:text-white dark:placeholder-gray-400 dark:bg-gray-800"
             placeholder="Write a comment..."
             required
