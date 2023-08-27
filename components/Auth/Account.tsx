@@ -8,6 +8,7 @@ import Profiles from "@/interfaces/profile";
 import supabase from "@/utils/supabase";
 import Router from "next/router";
 import { IndexLayout } from "@/layout";
+import { toast } from "react-toastify";
 
 export default function Account({ session }: { session: Session }) {
   const user = useUser();
@@ -41,8 +42,7 @@ export default function Account({ session }: { session: Session }) {
         setAvatarUrl(data.avatar_url);
       }
     } catch (error) {
-      alert("Error loading user data!");
-      console.log(error);
+      toast.error("Error loading user data!")
     } finally {
       setLoading(false);
     }
@@ -73,8 +73,7 @@ export default function Account({ session }: { session: Session }) {
       if (error) throw error;
       Router.push("/");
     } catch (error) {
-      alert("Error updating the data!");
-      console.log(error);
+      toast.error("Error updating the data!")
     } finally {
       setLoading(false);
     }

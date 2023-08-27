@@ -3,6 +3,7 @@ import Notation from "@/interfaces/notation";
 import supabase from "@/utils/supabase";
 import { User, useSession } from "@supabase/auth-helpers-react";
 import React, { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 
 type Props = {
   closeAddingReview: any;
@@ -30,9 +31,10 @@ const ReviewForm = ({ closeAddingReview, album, user, notation }: Props) => {
       let { error } = await supabase.from("reviews").insert([data]);
       if (error) throw error;
       closeAddingReview();
-      alert("Review added with success !");
+      toast.success("Review added with success !")
+      
     } catch (errorAdd) {
-      alert("An error has occured, you review have not been added !");
+      toast.error("An error has occured, you review have not been added !")
     }
   }
 
@@ -42,13 +44,15 @@ const ReviewForm = ({ closeAddingReview, album, user, notation }: Props) => {
       comment: comment,
     };
     try {
-      let { error } = await supabase.from("reviews").update([data]).eq('id', notation?.id);
+      let { error } = await supabase
+        .from("reviews")
+        .update([data])
+        .eq("id", notation?.id);
       if (error) throw error;
       closeAddingReview();
-      alert("Review updated with success !");
+      toast.success("Review updated with success !")
     } catch (errorUpdate) {
-      alert("An error has occured, you review have not been updated !");
-      console.log(errorUpdate);
+      toast.error("An error has occured, you review have not been updated !")
     }
   }
 
@@ -67,39 +71,37 @@ const ReviewForm = ({ closeAddingReview, album, user, notation }: Props) => {
   });
 
   useEffect(() => {
-    if (note && album &&note > album.nb_title) {
+    if (note && album && note > album.nb_title) {
       setNote(album.nb_title);
     }
     if (note && note < 0) {
       setNote(0);
     }
-  }, [album, note])
-  
+  }, [album, note]);
 
   return (
     <div className="modal">
-      <div className="modal_content">
-        <div className="modal_header">
-          {notation != null ? (
-            <h1>Update your rate</h1>
-          ) : (
-            <h1>Add a new rate</h1>
-          )}
-        </div>
-        <div className="modal_body">
-          <div className="form-group">
-            <label htmlFor="noteName">Rate on <b> {album?.nb_title}</b> tracks</label>
-            <input
-              type="number"
-              name="review"
-              id="review"
-              placeholder="Review"
-              defaultValue={notation?.note}
-              onChange={(e) => setNote(parseInt(e.currentTarget.value))}
-            />
-          </div>
-          <div className="form-group">
-            <label htmlFor="groupe">Comment</label>
+      <div className="bg-[#313378] shadow-md rounded px-8 pt-6 pb-8 mb-4 w-[50vw]">
+        {notation != null ? (
+          <h1 className="text-xl font-bold mb-4">Update your rate</h1>
+        ) : (
+          <h1 className="text-xl font-bold mb-4">Add a new rate</h1>
+        )}
+        <hr />
+        <div className="mb-4 mt-2 text-black">
+          <label htmlFor="noteName" className="text-white mb-2 mt-4">
+            Rate on <b> {album?.nb_title}</b> tracks
+          </label>
+          <input
+            type="number"
+            name="review"
+            id="review"
+            placeholder="Review"
+            defaultValue={notation?.note}
+            onChange={(e) => setNote(parseInt(e.currentTarget.value))}
+          />
+          <div className="mb-8 mt-2">
+            <label htmlFor="groupe" className="text-white mb-2 mt-4">Comment</label>
             <input
               type="textarea"
               name="comment"
@@ -109,18 +111,28 @@ const ReviewForm = ({ closeAddingReview, album, user, notation }: Props) => {
               onChange={(e) => setComment(e.currentTarget.value)}
             />
           </div>
-          {notation == null ? (
-            <button type="submit" onClick={() => fillNewReview(note, comment)}>
-              Submit
-            </button>
-          ) : (
-            <button type="submit" onClick={() => updateReview(note, comment)}>
-              Update
-            </button>
-          )}
-        </div>
-        <div className="modal_footer py-4">
-          <button onClick={() => closeAddingReview()}>Close</button>
+          <div className="flex items-center justify-around">
+            {notation == null ? (
+              <button
+                type="submit"
+                className="m-2  hover:bg-[#4547a8] text-blue-50 dark:text-blue-100 font-semibold hover:text-white py-2 px-4 border border-[#4547a8] hover:border-transparent rounded"
+                onClick={() => fillNewReview(note, comment)}
+              >
+                Submit
+              </button>
+            ) : (
+              <button type="submit" className="m-2  hover:bg-[#4547a8] text-blue-50 dark:text-blue-100 font-semibold hover:text-white py-2 px-4 border border-[#4547a8] hover:border-transparent rounded" onClick={() => updateReview(note, comment)}>
+                Update
+              </button>
+            )}
+
+          <button className=" my-3">
+            <a href="#" onClick={() => closeAddingReview()}>
+              Fermer
+            </a>
+          </button>
+          </div>
+
         </div>
       </div>
     </div>

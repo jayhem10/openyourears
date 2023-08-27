@@ -234,8 +234,6 @@ input {
   border: var(--custom-border);
   padding: 8px;
   font-size: 0.9rem;
-  background-color: var(--custom-bg-color);
-  color: var(--custom-color);
 }
 
 input[disabled] {
@@ -484,43 +482,8 @@ button.primary,
 
 .modal {
   position: absolute;
-  top: 10%;
+  top: 15%;
   z-index: 11;
-}
-
-.modal_content {
-  background-color: #FFF;
-  max-height: 800px;
-  width: 650px;
-}
-
-.modal_header {
-  padding: 10px 0;
-}
-
-.modal_header h1 {
-  color: #101010;
-}
-
-.modal_body {
-  padding: 10px 30px;
-}
-
-.modal_body .form-group {
-  margin-top: 15px;
-  margin-bottom: 15px;
-}
-
-.modal_body .form-group label {
-  text-align: left;
-}
-
-.modal_body button {
-  color: #101010;
-}
-
-.modal_footer a {
-  color: #101010;
 }
 
 /* loader */

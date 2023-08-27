@@ -1,7 +1,5 @@
 import {
-  useSession,
   useSupabaseClient,
-  User,
 } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 import { SetStateAction, useEffect, useState } from "react";
@@ -11,6 +9,8 @@ import Track from "@/interfaces/track";
 import { IndexLayout } from "@/layout";
 import ReviewAForm from "@/components/Review/ReviewForm";
 import Loader from "@/components/Ui/Loader";
+import CommentSection from "@/components/Comments/CommentSection";
+import { toast } from "react-toastify";
 
 type Props = {};
 
@@ -137,19 +137,19 @@ export default function Review({}: Props) {
         .eq("id", album?.id);
       if (error) throw error;
       closeAddingReview();
-      // alert("Average updated with success !");
+      toast.info("Average updated with success !")
     } catch (errorAdd) {
-      // alert("An error has occured, the average have not been updated !");
+      toast.error("Average not updated !")
     }
   }
   return (
     <>
       <IndexLayout>
         {!isLoading && album && reviews && user && (
-            // <div className="albumCover" style={{ 
-            //   backgroundImage: `url(${album.image})` 
-            // }}>
-            <div>
+          // <div className="albumCover" style={{
+          //   backgroundImage: `url(${album.image})`
+          // }}>
+          <div>
             <a href={`/albums`} className="font-medium text-white">
               <button className="m-2  hover:bg-[#4547a8] text-blue-50 dark:text-blue-100 font-semibold hover:text-white py-2 px-4 border border-[#4547a8] hover:border-transparent rounded">
                 back
@@ -222,10 +222,7 @@ export default function Review({}: Props) {
                         (track: Track, i: React.Key | null | undefined) => {
                           return (
                             <tr key={track.id} className="">
-                              <th
-                                scope="row"
-                                className="px-6 py-4 font-medium"
-                              >
+                              <th scope="row" className="px-6 py-4 font-medium">
                                 {track.piste}
                               </th>
                               <td
@@ -234,10 +231,7 @@ export default function Review({}: Props) {
                               >
                                 {track.title}
                               </td>
-                              <td
-                                scope="row"
-                                className="px-6 py-4 font-medium"
-                              >
+                              <td scope="row" className="px-6 py-4 font-medium">
                                 {track.duration}
                               </td>
                             </tr>
@@ -339,10 +333,10 @@ export default function Review({}: Props) {
             />
           )}
           {!isLoading && album == null && <div>This album does not exist</div>}
-          {isLoading && (
-        <Loader/>
-      )}
+          {isLoading && <Loader />}
         </div>
+
+        <CommentSection />
       </IndexLayout>
     </>
   );

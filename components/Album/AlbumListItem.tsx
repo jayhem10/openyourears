@@ -1,5 +1,5 @@
 /* eslint-disable @next/next/no-img-element */
-import React, { useEffect, useState } from "react";
+import React from "react";
 import Album from "@/interfaces/album";
 
 type Props = {
@@ -7,7 +7,6 @@ type Props = {
 };
 
 export default function AlbumListItem({ album }: Props) {
-  const [addReview, setAddReview] = useState<boolean>(false);
 
   return (
     <>
@@ -16,7 +15,7 @@ export default function AlbumListItem({ album }: Props) {
           <div className="absolute inset-0 bg-cover bg-center z-0">
             <img src={album.image} alt="" />
           </div>
-          <div className="opacity-0 hover:opacity-100 duration-300 absolute inset-0 z-10  text-xl text-white font-semibold hover:backdrop-blur-sm flex items-center justify-center">
+          <div className="opacity-0 hover:opacity-100 duration-300 absolute inset-0 z-10  text-xl text-indigo-700 font-semibold hover:backdrop-blur-md flex items-center justify-center">
             <div className="">{album.name}</div>
             {/* <div className="flex items-center">{album.groupe}</div> */}
           </div>

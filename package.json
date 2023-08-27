@@ -19,19 +19,21 @@
     "@types/node": "18.13.0",
     "@types/react": "18.0.28",
     "@types/react-dom": "18.0.11",
+    "dayjs": "^1.11.9",
     "eslint": "8.34.0",
     "eslint-config-next": "13.1.6",
     "framer-motion": "^10.0.1",
     "next": "13.1.6",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-toastify": "^9.1.3",
     "typescript": "4.9.5"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.13",
     "postcss": "^8.4.21",
     "supabase": "^1.38.4",
-    "tailwindcss": "^3.2.6",
-    "tailwind-scrollbar": "^2.0.1"
+    "tailwind-scrollbar": "^2.0.1",
+    "tailwindcss": "^3.2.6"
   }
 }

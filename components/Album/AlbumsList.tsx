@@ -1,32 +1,20 @@
 /* eslint-disable @next/next/no-img-element */
 import React, { useEffect, useState } from "react";
-import supabase from "@/utils/supabase";
 import AlbumListItem from "./AlbumListItem";
 import Album from "@/interfaces/album";
 import Loader from "../Ui/Loader";
 
-type Props = {};
+type Props = {
+  isLoading: boolean,
+  albums: Album[]
+};
 
-export default function AlbumsList({}: Props) {
-  const [albums, setAlbums] = useState<Album[]>();
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-
-  useEffect(() => {
-    const getAlbums = async () => {
-      const { data, error } = await supabase
-        .from("albums")
-        .select()
-        .order("id", { ascending: false });
-      setAlbums(data as Album[]);
-      setIsLoading(false);
-    };
-    getAlbums();
-  }, []);
+export default function AlbumsList({isLoading, albums}: Props) {
 
   return (
     <>
       <div className="text-center my-3">Albums</div>
-      <div className="grid grid-cols-4 gap-4">
+      <div className="grid md:grid-cols-4 gap-4 grid-cols-1">
         {albums &&
           !isLoading &&
           albums.map((album: Album, i: React.Key | null | undefined) => {
