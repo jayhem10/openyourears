@@ -6,6 +6,7 @@ import Link from "next/link";
 import React, { useEffect, useState } from "react";
 import supabase from "@/utils/supabase";
 import Album from "@/interfaces/album";
+import Loader from "@/components/Ui/Loader";
 
 type Props = {
 };
@@ -38,9 +39,12 @@ export default function Albums({}: Props) {
       <div className=" flex flex-col items-center justify-center text-center overflow-hidden">
         <button className="my-5" onClick={() => changeVisible()}><a href="#" >add Album</a></button>
         <AlbumAdd visibility={visible} changeVisible={changeVisible} getAlbums={getAlbums}/>
-        {albums &&
-          <AlbumsList albums={albums} isLoading={isLoading}/>
+        {albums && !isLoading && 
+          <AlbumsList albums={albums}/>
         }
+              {isLoading && (
+        <Loader/>
+      )}
       </div>
     </IndexLayout>
   );

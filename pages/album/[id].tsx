@@ -202,7 +202,7 @@ export default function Review({}: Props) {
                     </div>
                   </div>
                 </div>
-                <table className="w-3/4 text-sm text-left  mx-10 mt-10">
+                {/* <table className="w-3/4 text-sm text-left  mx-10 mt-10">
                   <thead className="text-xs  uppercase border-b">
                     <tr>
                       <th scope="col" className="px-6 py-3">
@@ -242,7 +242,7 @@ export default function Review({}: Props) {
                 </table>
                 {tracks?.length == 0 && (
                   <p className="text-center mt-3">No tracks</p>
-                )}
+                )} */}
               </div>
               <div className="">
                 <table className="w-full text-sm text-left text-blue-100 dark:text-blue-100">

@@ -31,10 +31,9 @@ const ReviewForm = ({ closeAddingReview, album, user, notation }: Props) => {
       let { error } = await supabase.from("reviews").insert([data]);
       if (error) throw error;
       closeAddingReview();
-      toast.success("Review added with success !")
-      
+      toast.success("Review added with success !");
     } catch (errorAdd) {
-      toast.error("An error has occured, you review have not been added !")
+      toast.error("An error has occured, you review have not been added !");
     }
   }
 
@@ -50,9 +49,9 @@ const ReviewForm = ({ closeAddingReview, album, user, notation }: Props) => {
         .eq("id", notation?.id);
       if (error) throw error;
       closeAddingReview();
-      toast.success("Review updated with success !")
+      toast.success("Review updated with success !");
     } catch (errorUpdate) {
-      toast.error("An error has occured, you review have not been updated !")
+      toast.error("An error has occured, you review have not been updated !");
     }
   }
 
@@ -81,18 +80,19 @@ const ReviewForm = ({ closeAddingReview, album, user, notation }: Props) => {
 
   return (
     <div className="modal">
-      <div className="bg-[#313378] shadow-md rounded px-8 pt-6 pb-8 mb-4 w-[50vw]">
+      <div className="bg-[#030303] border-2 border-indigo-500/50 shadow-md rounded px-8 pt-6 pb-8 mb-4 w-[50vw]">
         {notation != null ? (
-          <h1 className="text-xl font-bold mb-4">Update your rate</h1>
+          <h1 className="text-2xl font-bold mb-4">Update your rate</h1>
         ) : (
-          <h1 className="text-xl font-bold mb-4">Add a new rate</h1>
+          <h1 className="text-2xl font-bold mb-4">Add a new rate</h1>
         )}
         <hr />
-        <div className="mb-4 mt-2 text-black">
+        <div className="mb-4 mt-2 text-white">
           <label htmlFor="noteName" className="text-white mb-2 mt-4">
             Rate on <b> {album?.nb_title}</b> tracks
           </label>
           <input
+            className="shadow appearance-none border rounded w-full py-2 px-3 bg-[#39397f] text-white focus:ring-indigo-500 focus:border-indigo-500 leading-tight focus:outline-none focus:shadow-outline"
             type="number"
             name="review"
             id="review"
@@ -101,8 +101,11 @@ const ReviewForm = ({ closeAddingReview, album, user, notation }: Props) => {
             onChange={(e) => setNote(parseInt(e.currentTarget.value))}
           />
           <div className="mb-8 mt-2">
-            <label htmlFor="groupe" className="text-white mb-2 mt-4">Comment</label>
+            <label htmlFor="groupe" className="text-white mb-2 mt-4">
+              Comment
+            </label>
             <input
+              className="shadow appearance-none border rounded w-full py-2 px-3 bg-[#39397f] text-white focus:ring-indigo-500 focus:border-indigo-500 leading-tight focus:outline-none focus:shadow-outline"
               type="textarea"
               name="comment"
               id="comment"
@@ -121,18 +124,20 @@ const ReviewForm = ({ closeAddingReview, album, user, notation }: Props) => {
                 Submit
               </button>
             ) : (
-              <button type="submit" className="m-2  hover:bg-[#4547a8] text-blue-50 dark:text-blue-100 font-semibold hover:text-white py-2 px-4 border border-[#4547a8] hover:border-transparent rounded" onClick={() => updateReview(note, comment)}>
+              <button
+                type="submit"
+                className="m-2 hover:bg-[#4547a8] text-blue-50 dark:text-blue-100 font-semibold hover:text-white py-2 px-4 border border-[#4547a8] hover:border-transparent rounded"
+                onClick={() => updateReview(note, comment)}
+              >
                 Update
               </button>
             )}
-
-          <button className=" my-3">
             <a href="#" onClick={() => closeAddingReview()}>
-              Fermer
+              <button className="m-2  hover:bg-[#4547a8] text-blue-50 dark:text-blue-100 font-semibold hover:text-white py-2 px-4 border border-[#4547a8] hover:border-transparent rounded">
+                Fermer
+              </button>
             </a>
-          </button>
           </div>
-
         </div>
       </div>
     </div>

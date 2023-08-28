@@ -66,23 +66,26 @@ const AlbumAdd = ({ visibility, changeVisible, getAlbums }: Props) => {
     <>
       {visibility && (
         <div className="modal">
-          <div className="bg-[#313378] shadow-md rounded px-8 pt-6 pb-8 mb-4 w-[50vw]">
-            <h1 className="text-xl font-bold mb-4">Add an album</h1>
-            <hr />
-            <div className="mb-4 mt-2">
-              <label className="text-white" htmlFor="albumName">Album name</label>
+
+          <div className="bg-[#030303] border-2 border-indigo-500/50 shadow-md rounded px-8 pt-6 pb-8 mb-4 w-[50vw]">
+          <div className="divide-y divide-indigo-800" >
+
+            <h1 className="text-2xl font-bold mb-4">Add an album</h1>
+            <div className="mb-4 mt-3">
+              <label className=" text-white font-bold mt-8" htmlFor="albumName">Album name</label>
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3 bg-[#313378] text-white focus:ring-indigo-500 focus:border-indigo-500 leading-tight focus:outline-none focus:shadow-outline"
                 name="albumName"
                 id="albumName"
                 placeholder="Album"
                 onChange={(e) => setAlbumName(e.currentTarget.value)}
               />{" "}
             </div>
+            </div>
             <div className="mb-6">
               <label className="text-white" htmlFor="groupe">Artist</label>
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3 bg-[#39397f] text-white focus:ring-indigo-500 focus:border-indigo-500 leading-tight focus:outline-none focus:shadow-outline"
                 type="text"
                 name="groupe"
                 id="groupe"
@@ -93,7 +96,7 @@ const AlbumAdd = ({ visibility, changeVisible, getAlbums }: Props) => {
             <div className="mb-6">
               <label className="text-white" htmlFor="style">Music style</label>
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3 bg-[#39397f] text-white focus:ring-indigo-500 focus:border-indigo-500 leading-tight focus:outline-none focus:shadow-outline"
                 type="text"
                 name="styleOne"
                 id="styleOne"
@@ -106,7 +109,7 @@ const AlbumAdd = ({ visibility, changeVisible, getAlbums }: Props) => {
             <div className="mb-6">
               <label className="text-white" htmlFor="nbtitle">Number of tracks</label>
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3 bg-[#39397f] text-white focus:ring-indigo-500 focus:border-indigo-500 leading-tight focus:outline-none focus:shadow-outline"
                 type="number"
                 name="nbtitle"
                 id="nbTitle"
@@ -118,7 +121,7 @@ const AlbumAdd = ({ visibility, changeVisible, getAlbums }: Props) => {
             <div className="mb-6">
               <label className="text-white" htmlFor="release-date">Release date</label>
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3 bg-[#39397f] text-white focus:ring-indigo-500 focus:border-indigo-500 leading-tight focus:outline-none focus:shadow-outline"
                 type="date"
                 name="releaseDate"
                 id="release-date"
@@ -129,7 +132,7 @@ const AlbumAdd = ({ visibility, changeVisible, getAlbums }: Props) => {
             <div className="mb-6">
               <label className="text-white" htmlFor="release-date">URL Cover</label>
               <input
-                className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                className="shadow appearance-none border rounded w-full py-2 px-3 bg-[#39397f] text-white focus:ring-indigo-500 focus:border-indigo-500 leading-tight focus:outline-none focus:shadow-outline"
                 type="text"
                 name="image"
                 id="image"
@@ -155,7 +158,7 @@ const AlbumAdd = ({ visibility, changeVisible, getAlbums }: Props) => {
                 Send
               </button>
               <a href="#" onClick={() => changeVisible(visibility)}>
-              <button className=" my-3">
+              <button className="m-2 hover:bg-[#4547a8] text-blue-50 dark:text-blue-100 font-semibold hover:text-white py-2 px-4 border border-[#4547a8] hover:border-transparent rounded">
                   Fermer
               </button>
               </a>

@@ -37,7 +37,6 @@ export default function CommentSection({}: Props) {
       .order("created_at", { ascending: false });
       setComments(data);
   };
-
   return (
     <>
     {!isLoading ?
@@ -46,7 +45,7 @@ export default function CommentSection({}: Props) {
           <div className="flex justify-between items-center mb-6">
             {/* component total comments */}
             <h2 className="text-lg lg:text-2xl font-bold text-white">
-              Discussion ({comments?.length})
+              Comments ({comments?.length})
             </h2>
             {/* component total comments END */}
           </div>
@@ -64,7 +63,9 @@ export default function CommentSection({}: Props) {
         </div>
       </section>
       :
-      <Loader/>
+      <div className="flex items-center justify-center  text-center overflow-hidden pt-8">
+        <Loader/>
+      </div>
       }
     </>
   );

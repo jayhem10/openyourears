@@ -17,7 +17,7 @@ export function IndexLayout({ children }: { children: React.ReactNode }) {
       <div className="child-view text-white snap-y snap-mandatory overflow-y-scroll overflow-x-hidden scrollbar scrollbar-track-[#0ef5e3] scrollbar-thumb-[#0ef5e3]/80">
         {children}
       </div>
-        <footer className="footer footer-center p-4  mt-3">
+        <footer className="footer footer-center p-4  mt-3 z-10">
             <p className="text-sm">Copyright © 2023 - All right reserved by OpenYourEars</p>
       </footer>
     </>
