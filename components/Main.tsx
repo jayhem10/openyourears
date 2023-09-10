@@ -19,10 +19,14 @@ export default function Main({}: Props) {
   const [albums, setAlbums] = useState<Album[]>();
   const [reviews, setReviews] = useState<Notation[]>();
   const [bestAlbums, setBestAlbums] = useState<Album[]>();
+  const [albumsToReviews, setAlbumsToReviews] = useState<Album[]>();
+
 
   const [isLoadingAlbums, setIsLoadingAlbums] = useState<boolean>(true);
   const [isLoadingReviews, setIsLoadingReviews] = useState<boolean>(true);
   const [isLoadingBestAlbums, setIsLoadingBestAlbums] = useState<boolean>(true);
+  const [isLoadingAlbumsToReviews, setIsLoadingAlbumsToReviews] = useState<boolean>(true);
+
 
 
   useEffect(() => {
@@ -38,6 +42,7 @@ export default function Main({}: Props) {
     getLastAlbum();
     getLastReviews();
     getBestAlbums();
+    getAlbumsNotReviewedByUser();
   }, []);
 
   const getLastAlbum = async () => {
@@ -75,6 +80,30 @@ export default function Main({}: Props) {
     setIsLoadingBestAlbums(false);
   };
 
+  const getAlbumsNotReviewedByUser = async () => {
+
+    const { data, error } = await  supabase
+      .from('reviews')
+      .select('album_id')
+      .eq('user_id', session?.user.id);
+      const values = [];
+      if (data) {
+        for (const objet of data) {
+          values.push(objet.album_id);
+        }
+      }
+
+    if (values) {
+      const { data, error } = await supabase
+      .from('albums')
+      .select()
+      .not('id', 'in', `(${values.toString()})`
+      );
+      setAlbumsToReviews(data as Album[]);
+      setIsLoadingAlbumsToReviews(false);
+    };
+}
+
   return (
     <>
       <div className="h-fit ">
@@ -87,7 +116,7 @@ export default function Main({}: Props) {
           )}
         </div>
 
-        <h2 className="pl-8">Last albums</h2>
+        <h2 className="pl-8 mt-4">Last albums</h2>
         <div className="w-full text-center  flex space-x-5 overflow-x-scroll p-10 snap-x snap-mandatory scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-[#7275f2]/80">
           {albums?.map((album, i) => {
             return (
@@ -131,7 +160,7 @@ export default function Main({}: Props) {
           })}
           {!isLoadingAlbums && albums &&
           <article
-            className="h-92 my-auto w-48 rounded-lg items-center flex-shrink-0 py-5  bg-[#292929] hover:opacity-100 opacity-40 cursor-pointer transition-opacity duration-200"
+            className="h-92 my-auto w-48 rounded-lg items-center flex-shrink-0 py-5 snap-center bg-[#292929] hover:opacity-100 opacity-40 cursor-pointer transition-opacity duration-200"
             onClick={() => router.push(`albums`)}
           >
             <div className="px-0 md:px-5">
@@ -147,7 +176,6 @@ export default function Main({}: Props) {
 
         <h2 className="pl-8 pt-10">Last reviews</h2>
         <div className="w-full text-center  flex space-x-5 overflow-x-scroll p-10 snap-x snap-mandatory scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-[#7275f2]/80">
-          {/* {jobs.filter(p => p.locale === locale).map((job, i) => { */}
           {reviews && reviews?.map((review, i) => {
             return (
               <article
@@ -192,7 +220,7 @@ export default function Main({}: Props) {
           })}
           {!isLoadingReviews && reviews &&
           <article
-            className="h-92 my-auto w-48 rounded-lg items-center  flex-shrink-0 py-5 bg-[#292929] hover:opacity-100 opacity-40 cursor-pointer transition-opacity duration-200"
+            className="h-92 my-auto w-48 rounded-lg items-center snap-center flex-shrink-0 py-5 bg-[#292929] hover:opacity-100 opacity-40 cursor-pointer transition-opacity duration-200"
             onClick={() => router.push(`albums`)}
           >
             <div className="px-0 md:px-5">
@@ -250,7 +278,7 @@ export default function Main({}: Props) {
           })}
           {!isLoadingBestAlbums && albums &&
           <article
-            className="h-92 my-auto w-48 rounded-lg items-center flex-shrink-0 py-5 bg-[#292929] hover:opacity-100 opacity-40 cursor-pointer transition-opacity duration-200"
+            className="h-92 my-auto w-48 rounded-lg items-center snap-center flex-shrink-0 py-5 bg-[#292929] hover:opacity-100 opacity-40 cursor-pointer transition-opacity duration-200"
             onClick={() => router.push(`albums`)}
           >
             <div className="px-0 md:px-5">
@@ -262,6 +290,62 @@ export default function Main({}: Props) {
           </article>
           }
           {isLoadingBestAlbums && < Loader/>}
+        </div>
+
+          {/* Albums à noter */}
+        <h2 className="pl-8 pt-10">Albums to note</h2>
+        <div className="w-full text-center mb-10 flex space-x-5 overflow-x-scroll p-10 snap-x snap-mandatory scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-[#7275f2]/80">
+          {!isLoadingAlbumsToReviews && albumsToReviews?.map((albumsToReview, i) => {
+            return (
+              <article
+                key={albumsToReview.id}
+                className="flex flex-col h-72 justify-between w-48 rounded-lg items-center  flex-shrink-0 py-5 snap-center bg-[#292929] hover:opacity-100 opacity-40 cursor-pointer transition-opacity duration-200"
+                onClick={() => router.push(`album/${albumsToReview.id}`)}
+              >
+                <motion.img
+                  initial={{
+                    y: -100,
+                    opacity: 0,
+                  }}
+                  transition={{
+                    duration: 1.2,
+                  }}
+                  whileInView={{
+                    opacity: 1,
+                    y: 0,
+                  }}
+                  viewport={{
+                    once: true,
+                  }}
+                  className="w-32 object-contain object-center"
+                  src={albumsToReview.image}
+                  alt="logo"
+                />
+                <div className="px-0 md:px-5">
+                  <h4 className="text-l font-light">
+                    {albumsToReview.name.length > 50
+                      ? albumsToReview.name.substring(0, 50) + "..."
+                      : albumsToReview.name}
+                  </h4>
+                  <p className="font-bold text-l mt-1">{albumsToReview.groupe}</p>
+                </div>
+              </article>
+            );
+          })}
+          {!isLoadingAlbumsToReviews && albums &&
+          <article
+            className="h-92 my-auto w-48 rounded-lg items-center snap-center flex-shrink-0 py-5 bg-[#292929] hover:opacity-100 opacity-40 cursor-pointer transition-opacity duration-200"
+            onClick={() => router.push(`albums`)}
+          >
+            <div className="px-0 md:px-5">
+              <p className="font-bold text-l mt-1">+</p>
+            </div>
+            <footer className="h-10 uppercase py-5 text-gray-300">
+              See all albums
+            </footer>
+          </article>
+          }
+          {isLoadingAlbumsToReviews && < Loader/>}
         </div>
       </div>
     </>

@@ -151,13 +151,13 @@ export default function Review({}: Props) {
           // }}>
           <div>
             <a href={`/albums`} className="font-medium text-white">
-              <button className="m-2  hover:bg-[#4547a8] text-blue-50 dark:text-blue-100 font-semibold hover:text-white py-2 px-4 border border-[#4547a8] hover:border-transparent rounded">
+              <button className="m-2 hover:bg-[#4547a8] text-blue-50 dark:text-blue-100 font-semibold hover:text-white py-2 px-4 border border-[#4547a8] hover:border-transparent rounded">
                 back
               </button>
             </a>
-            <div className="grid grid-cols-2 gap-4 mt-8">
+            <div className="grid grid-cols-1 text-center md:text-left md:grid-cols-2 gap-4 mt-8">
               <div>
-                <div className="grid grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div className="mx-auto ">
                     <img width="250px" src={album.image} alt="vinyl" />
                   </div>
@@ -179,9 +179,11 @@ export default function Review({}: Props) {
                         {album.styleThree}
                       </span>
                     </div>
-                    <div className="text-l my-5 mr-2 mb-2 px-3 py-1 text-center border border-[#4547a8] rounded-full">
-                      Moyenne :{" "}
-                      {average == 0 ? "Aucune review" : average.toFixed(2)} / 10
+                    <div className="flex justify-center">
+                      <div className="w-80 md:w-full text-l my-5 mr-2 mb-2 px-3 py-1 text-center border border-[#4547a8] rounded-full">
+                        Moyenne :{" "}
+                        {average == 0 ? "Aucune review" : average.toFixed(2)} / 10
+                      </div>
                     </div>
                     <div className="mt-10 flex justify-center">
                       {!alreadyReviewd && (
@@ -244,7 +246,7 @@ export default function Review({}: Props) {
                   <p className="text-center mt-3">No tracks</p>
                 )} */}
               </div>
-              <div className="">
+              <div className=" overflow-y-auto">
                 <table className="w-full text-sm text-left text-blue-100 dark:text-blue-100">
                   <thead className="text-xs text-white uppercase bg-[#313378] border-b border-[#18122B] dark:text-white">
                     <tr>

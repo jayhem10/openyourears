@@ -1,4 +1,4 @@
-import Navbar from "@/components/Navbar";
+import NavigationBar from "@/components/NavigationBar";
 import { useSession } from "@supabase/auth-helpers-react";
 import Head from "next/head";
 import React from "react";
@@ -13,7 +13,7 @@ export function IndexLayout({ children }: { children: React.ReactNode }) {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Navbar session={session} />
+      <NavigationBar session={session} />
       <div className="child-view text-white snap-y snap-mandatory overflow-y-scroll overflow-x-hidden scrollbar scrollbar-track-[#0ef5e3] scrollbar-thumb-[#0ef5e3]/80">
         {children}
       </div>

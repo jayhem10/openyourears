@@ -80,7 +80,7 @@ const ReviewForm = ({ closeAddingReview, album, user, notation }: Props) => {
 
   return (
     <div className="modal">
-      <div className="bg-[#030303] border-2 border-indigo-500/50 shadow-md rounded px-8 pt-6 pb-8 mb-4 w-[50vw]">
+      <div className="bg-[#030303] border-2 border-indigo-500/50 shadow-md rounded px-8 pt-6 pb-8 mb-4 w-[80vw] md:w-[50vw]">
         {notation != null ? (
           <h1 className="text-2xl font-bold mb-4">Update your rate</h1>
         ) : (
