@@ -72,12 +72,12 @@ const ReviewForm = ({ closeAddingReview, album, user, notation }: Props) => {
   useEffect(() => {
     if (note && album && note > album.nb_title) {
       setNote(album.nb_title);
+      toast.info("Your score cannot exceed the number of tracks");
     }
     if (note && note < 0) {
       setNote(0);
     }
   }, [album, note]);
-
   return (
     <div className="modal" >
       <div className="bg-[#030303] border-2 border-indigo-500/50 shadow-md rounded px-8 pt-6 pb-8 mb-4 w-[80vw] md:w-[50vw]">
@@ -97,7 +97,7 @@ const ReviewForm = ({ closeAddingReview, album, user, notation }: Props) => {
             name="review"
             id="review"
             placeholder="Review"
-            defaultValue={notation?.note}
+            value={note}
             onChange={(e) => setNote(parseInt(e.currentTarget.value))}
             autoFocus={true}
           />

@@ -72,13 +72,14 @@ const AlbumAdd = ({ visibility, changeVisible, getAlbums }: Props) => {
 
             <h1 className="text-2xl font-bold mb-4">Add an album</h1>
             <div className="mb-4 mt-3">
-              <label className=" text-white font-bold mt-8" htmlFor="albumName">Album name</label>
+              <label className=" text-white font-bold mt-8" htmlFor="albumName" >Album name</label>
               <input
                 className="shadow appearance-none border rounded w-full py-2 px-3 bg-[#313378] text-white focus:ring-indigo-500 focus:border-indigo-500 leading-tight focus:outline-none focus:shadow-outline"
                 name="albumName"
                 id="albumName"
                 placeholder="Album"
                 onChange={(e) => setAlbumName(e.currentTarget.value)}
+                autoFocus={true}
               />{" "}
             </div>
             </div>

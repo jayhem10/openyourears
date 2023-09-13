@@ -34,7 +34,6 @@ export default function CommentAdd({getComments, userId, albumId}: Props) {
       setCommentary("");
       getComments();
     } catch (errorAdd) {
-        // console.log(errorAdd)
       toast.error("An error occured");
     }
   }

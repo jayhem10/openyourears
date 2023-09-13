@@ -16,7 +16,7 @@ export default function NavigationBar({ session }: Props) {
     supabase.auth.signOut();
     Router.push("/");
   };
-  console.log(router.pathname);
+
   return (
     <Navbar
       fluid
