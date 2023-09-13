@@ -25,13 +25,14 @@ export default function NavigationBar({ session }: Props) {
     >
       <Navbar.Brand href="/">
         <img
-          alt="Flowbite React Logo"
-          className="mr-3 h-6 sm:h-9"
-          src="https://s1.qwant.com/thumbr/0x380/a/a/633a12baf625d4dd0d966fec9b462d73bfa9754b296122658bba3189b0cf87/24191-white-music-notes-design.png?u=https%3A%2F%2Fwww.downloadclipart.net%2Flarge%2F24191-white-music-notes-design.png&q=0&b=1&p=0&a=0"
+          alt="OpenYourEars"
+          className="ml-10 h-10 md:h-16"
+          src="/oye.png"
+          id="oye"
         />
-        <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">
+        {/* <span className="self-center text-2xl font-semibold whitespace-nowrap text-white">
           OpenYourEars
-        </span>
+        </span> */}
       </Navbar.Brand>
       <div className="flex md:order-2 ">
         <Dropdown
