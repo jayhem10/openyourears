@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { AiOutlineClose, AiOutlineSearch } from "react-icons/Ai";
+// import { AiOutlineClose, AiOutlineSearch } from "react-icons/Ai";
 
 type Props = {
   onSearch: any;
@@ -27,10 +27,12 @@ const Search = ({ onSearch, emptySearch }: Props) => {
       </div>
       <div className="my-auto">
         <button className="text-xs mr-2" onClick={() => handleSearch()}>
-          <AiOutlineSearch size={20} />
+          {/* <AiOutlineSearch size={20} /> */}
+          Search
         </button>
         <button className="text-xs" onClick={() => emptySearch()}>
-          <AiOutlineClose size={20} />
+          {/* <AiOutlineClose size={20} /> */}
+          x
         </button>
       </div>
     </div>
