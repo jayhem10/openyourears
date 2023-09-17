@@ -64,7 +64,6 @@ export default function CommentAdd({getComments, userId, albumId}: Props) {
             placeholder="Write a comment..."
             required
             onChange={(e) => setCommentary(e.currentTarget.value)}
-
           ></textarea>
         </div>
         <button
