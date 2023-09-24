@@ -21,11 +21,11 @@ export default function CommentSection({}: Props) {
   useEffect(() => {
     if (id) {
       getComments();
-      setIsLoading(false);
     }
   }, [id]);
 
   const getComments = async () => {
+    setIsLoading(true);
     const { data, error } = await supabase
       .from("comments")
       .select(
@@ -35,38 +35,53 @@ export default function CommentSection({}: Props) {
       )
       .eq("album_id", id)
       .order("created_at", { ascending: false });
-      setComments(data);
+    setComments(data);
+    setIsLoading(false);
   };
   return (
     <>
-    {!isLoading ?
-      <section className=" py-8 lg:py-16">
-        <div className="max-w-3xl mx-auto px-4">
-          <div className="flex justify-between items-center mb-6">
-            {/* component total comments */}
-            <h2 className="text-lg lg:text-2xl font-bold text-white">
-              Comments ({comments?.length})
-            </h2>
-            {/* component total comments END */}
+      {!isLoading ? (
+        <section className=" py-8 lg:py-16">
+          <div className="max-w-3xl mx-auto px-4">
+            <div className="flex justify-between items-center mb-6">
+              {/* component total comments */}
+              <h2 className="text-lg lg:text-2xl font-bold text-white">
+                Comments ({comments?.length})
+              </h2>
+              {/* component total comments END */}
+            </div>
+
+            {/* component add a  comment */}
+            {id && (
+              <CommentAdd
+                getComments={getComments}
+                userId={user?.id}
+                albumId={id}
+              />
+            )}
+            {/* component add a  comment */}
+
+            {/* component list  comments */}
+            {comments &&
+              !isLoading &&
+              comments.map(
+                (comment: Comment, i: React.Key | null | undefined) => {
+                  return (
+                    <CommentItem
+                      key={i}
+                      comment={comment}
+                      getComments={getComments}
+                    />
+                  );
+                }
+              )}
           </div>
-
-          {/* component add a  comment */}
-          {id && 
-            <CommentAdd getComments={getComments} userId={user?.id} albumId={id}/>
-          }
-          {/* component add a  comment */}
-
-          {/* component list  comments */}
-          {comments && !isLoading && comments.map((comment: Comment, i: React.Key | null | undefined) => {
-            return <CommentItem key={i} comment={comment} getComments={getComments}/>;
-          })}
+        </section>
+      ) : (
+        <div className="flex items-center justify-center  text-center overflow-hidden pt-8">
+          <Loader />
         </div>
-      </section>
-      :
-      <div className="flex items-center justify-center  text-center overflow-hidden pt-8">
-        <Loader/>
-      </div>
-      }
+      )}
     </>
   );
 }

@@ -20,12 +20,12 @@ const AlbumList = ({ albums, onSelectAlbum }: Props) => {
             href="#"
             onClick={() => onSelectAlbum(album)}
           >
-            <div className="w-36 h-36 bg-red-100 relative border-white rounded mx-auto">
+            <div className="w-32 h-32 bg-red-100 relative border-white rounded mx-auto">
               
               <div className="absolute inset-0 bg-cover bg-center z-0">
                 <img src={album.cover_medium} alt="cover"  />
               </div>
-              <div className="opacity-0 hover:opacity-100 duration-300 absolute inset-0 z-10  text-xl text-indigo-700 font-semibold hover:backdrop-blur-md flex items-center justify-center">
+              <div className="opacity-0 hover:opacity-100 duration-300 absolute inset-0 z-10  text-base text-indigo-700 font-semibold hover:backdrop-blur-md flex items-center justify-center">
                 <div className="">{album.title}</div>
                 {/* <div className="flex items-center">{album.groupe}</div> */}
               </div>
