@@ -169,7 +169,7 @@ const AlbumAddDeezer = ({ visibility, changeVisible, getAlbums }: Props) => {
       {visibility && (
         <div className="modal mt-20">
           <div className="bg-[#030303] border-2 border-indigo-500/50 shadow-md rounded px-2 md:px-8 pt-6 w-[80vw] md:w-[50vw] max-h-[90vh] overflow-y-auto ">
-            <h1 className="my-3">Search for an album</h1>
+            <h1 className="mt-2 mb-4 text-2xl font-bold">Search for an album</h1>
             <Search onSearch={searchAlbums} emptySearch={emptySearch} />
             {!selectedAlbum && !searchingAlbums &&
               <AlbumList albums={albums} onSelectAlbum={handleSelectAlbum} />

@@ -1,6 +1,4 @@
-import {
-  useSupabaseClient,
-} from "@supabase/auth-helpers-react";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
 import { useRouter } from "next/router";
 import { SetStateAction, useEffect, useState } from "react";
 import Notation from "@/interfaces/notation";
@@ -137,9 +135,9 @@ export default function Review({}: Props) {
         .eq("id", album?.id);
       if (error) throw error;
       closeAddingReview();
-      toast.info("Average updated with success !")
+      toast.info("Average updated with success !");
     } catch (errorAdd) {
-      toast.error("Average not updated !")
+      toast.error("Average not updated !");
     }
   }
   return (
@@ -182,69 +180,12 @@ export default function Review({}: Props) {
                     <div className="flex justify-center">
                       <div className="w-80 md:w-full text-l my-5 mr-2 mb-2 px-3 py-1 text-center border border-[#4547a8] rounded-full">
                         Moyenne :{" "}
-                        {average == 0 ? "Aucune review" : average.toFixed(2)} / 10
+                        {average == 0 ? "Aucune review" : average.toFixed(2)} /
+                        10
                       </div>
-                    </div>
-                    <div className="mt-10 flex justify-center">
-                      {!alreadyReviewd && (
-                        <button
-                          className="m-2 bg-[#4547a8] hover:bg-[#4547a8] text-blue-50 dark:text-blue-100 font-semibold hover:text-white py-2 px-4 border border-[#4547a8] hover:border-transparent rounded"
-                          onClick={() => setAddingReview(true)}
-                        >
-                          <svg
-                            width={25}
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 512 512"
-                            className=""
-                          >
-                            <path d="M96 352V96c0-35.3 28.7-64 64-64H416c35.3 0 64 28.7 64 64V293.5c0 17-6.7 33.3-18.7 45.3l-58.5 58.5c-12 12-28.3 18.7-45.3 18.7H160c-35.3 0-64-28.7-64-64zM272 128c-8.8 0-16 7.2-16 16v48H208c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h48v48c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V256h48c8.8 0 16-7.2 16-16V208c0-8.8-7.2-16-16-16H320V144c0-8.8-7.2-16-16-16H272zm24 336c13.3 0 24 10.7 24 24s-10.7 24-24 24H136C60.9 512 0 451.1 0 376V152c0-13.3 10.7-24 24-24s24 10.7 24 24l0 224c0 48.6 39.4 88 88 88H296z" />
-                          </svg>
-                        </button>
-                      )}
                     </div>
                   </div>
                 </div>
-                {/* <table className="w-3/4 text-sm text-left  mx-10 mt-10">
-                  <thead className="text-xs  uppercase border-b">
-                    <tr>
-                      <th scope="col" className="px-6 py-3">
-                        #
-                      </th>
-                      <th scope="col" className="px-6 py-3">
-                        Title
-                      </th>
-                      <th scope="col" className="px-6 py-3">
-                        Duration
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {tracks &&
-                      tracks.map(
-                        (track: Track, i: React.Key | null | undefined) => {
-                          return (
-                            <tr key={track.id} className="">
-                              <th scope="row" className="px-6 py-4 font-medium">
-                                {track.piste}
-                              </th>
-                              <td
-                                scope="row"
-                                className="px-6 py-4 font-medium "
-                              >
-                                {track.title}
-                              </td>
-                              <td scope="row" className="px-6 py-4 font-medium">
-                                {track.duration}
-                              </td>
-                            </tr>
-                          );
-                        }
-                      )}
-                  </tbody>
-                </table>
-                {tracks?.length == 0 && (
-                  <p className="text-center mt-3">No tracks</p>
-                )} */}
               </div>
               <div className=" overflow-y-auto">
                 <table className="w-full text-sm text-left text-blue-100 dark:text-blue-100">
@@ -314,6 +255,23 @@ export default function Review({}: Props) {
                 {reviews?.length == 0 && (
                   <p className="text-center mt-3">No Reviews</p>
                 )}
+                <div className="mt-10 flex justify-center">
+                  {!alreadyReviewd && (
+                    <button
+                      className="m-2 bg-[#4547a8] hover:bg-[#4547a8] text-blue-50 dark:text-blue-100 font-semibold hover:text-white py-2 px-4 border border-[#4547a8] hover:border-transparent rounded"
+                      onClick={() => setAddingReview(true)}
+                    >
+                      <svg
+                        width={25}
+                        xmlns="http://www.w3.org/2000/svg"
+                        viewBox="0 0 512 512"
+                        className=""
+                      >
+                        <path d="M96 352V96c0-35.3 28.7-64 64-64H416c35.3 0 64 28.7 64 64V293.5c0 17-6.7 33.3-18.7 45.3l-58.5 58.5c-12 12-28.3 18.7-45.3 18.7H160c-35.3 0-64-28.7-64-64zM272 128c-8.8 0-16 7.2-16 16v48H208c-8.8 0-16 7.2-16 16v32c0 8.8 7.2 16 16 16h48v48c0 8.8 7.2 16 16 16h32c8.8 0 16-7.2 16-16V256h48c8.8 0 16-7.2 16-16V208c0-8.8-7.2-16-16-16H320V144c0-8.8-7.2-16-16-16H272zm24 336c13.3 0 24 10.7 24 24s-10.7 24-24 24H136C60.9 512 0 451.1 0 376V152c0-13.3 10.7-24 24-24s24 10.7 24 24l0 224c0 48.6 39.4 88 88 88H296z" />
+                      </svg>
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
           </div>

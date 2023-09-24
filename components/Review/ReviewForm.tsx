@@ -1,7 +1,7 @@
 import Album from "@/interfaces/album";
 import Notation from "@/interfaces/notation";
 import supabase from "@/utils/supabase";
-import { User, useSession } from "@supabase/auth-helpers-react";
+import { User } from "@supabase/auth-helpers-react";
 import React, { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 
@@ -135,7 +135,7 @@ const ReviewForm = ({ closeAddingReview, album, user, notation }: Props) => {
             )}
             <a href="#" onClick={() => closeAddingReview()}>
               <button className="m-2  hover:bg-[#4547a8] text-blue-50 dark:text-blue-100 font-semibold hover:text-white py-2 px-4 border border-[#4547a8] hover:border-transparent rounded">
-                Fermer
+                Close
               </button>
             </a>
           </div>

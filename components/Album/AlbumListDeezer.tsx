@@ -1,7 +1,6 @@
 // components/AlbumList.tsx
 
 import DeezerAlbum from "@/interfaces/deezer/deezerAlbum";
-import Image from "next/image";
 import React from "react";
 
 type Props = {
