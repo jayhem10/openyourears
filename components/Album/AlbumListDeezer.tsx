@@ -19,7 +19,7 @@ const AlbumList = ({ albums, onSelectAlbum }: Props) => {
             href="#"
             onClick={() => onSelectAlbum(album)}
           >
-            <div className="w-32 h-32 bg-red-100 relative border-white rounded mx-auto">
+            <div className="w-48 h-48 md:w-32 md:h-32 bg-red-100 relative border-white rounded mx-auto">
               
               <div className="absolute inset-0 bg-cover bg-center z-0">
                 <img src={album.cover_medium} alt="cover"  />

@@ -10,16 +10,17 @@ type Props = {
   album?: Album;
   user: User;
   notation?: Notation;
+  setRecountAverage: any;
 };
 
-const ReviewForm = ({ closeAddingReview, album, user, notation }: Props) => {
+const ReviewForm = ({ closeAddingReview, album, user, notation,setRecountAverage }: Props) => {
   const [note, setNote] = useState<number>(notation ? notation?.note : 0);
   const [comment, setComment] = useState<string>(
     notation ? notation?.comment : ""
   );
   let [lastInsertedId, setLastInsertedId] = useState<number>(0);
 
-  async function fillNewReview(review: number, comment: string) {
+  async function fillNewReview(note: number, comment: string) {
     const data = {
       id: ++lastInsertedId,
       note: note,
@@ -30,14 +31,14 @@ const ReviewForm = ({ closeAddingReview, album, user, notation }: Props) => {
     try {
       let { error } = await supabase.from("reviews").insert([data]);
       if (error) throw error;
-      closeAddingReview();
+      closeAddingReview(true);
       toast.success("Review added with success !");
     } catch (errorAdd) {
       toast.error("An error has occured, you review have not been added !");
     }
   }
 
-  async function updateReview(review: number, comment: string) {
+  async function updateReview(note: number, comment: string) {
     const data = {
       note: note,
       comment: comment,
@@ -48,7 +49,7 @@ const ReviewForm = ({ closeAddingReview, album, user, notation }: Props) => {
         .update([data])
         .eq("id", notation?.id);
       if (error) throw error;
-      closeAddingReview();
+      closeAddingReview(true);
       toast.success("Review updated with success !");
     } catch (errorUpdate) {
       toast.error("An error has occured, you review have not been updated !");

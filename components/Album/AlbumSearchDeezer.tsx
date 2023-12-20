@@ -1,10 +1,9 @@
 import React, { useState } from "react";
 type Props = {
   onSearch: any;
-  emptySearch: any;
 };
 
-const Search = ({ onSearch, emptySearch }: Props) => {
+const Search = ({ onSearch }: Props) => {
   const [query, setQuery] = useState("");
 
   const handleSearch = (e: { preventDefault: () => void }) => {
@@ -33,7 +32,7 @@ const Search = ({ onSearch, emptySearch }: Props) => {
               stroke="currentColor"
               stroke-linecap="round"
               stroke-linejoin="round"
-              stroke-width="2"
+              strokeWidth="2"
               d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
             />
           </svg>
@@ -69,7 +68,7 @@ const Search = ({ onSearch, emptySearch }: Props) => {
               stroke="currentColor"
               stroke-linecap="round"
               stroke-linejoin="round"
-              stroke-width="2"
+              strokeWidth="2"
               d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z"
             />
           </svg>

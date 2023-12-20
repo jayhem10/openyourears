@@ -25,11 +25,13 @@ export default function Review({}: Props) {
   const [tracks, setTracks] = useState<Track[]>();
   const [user, setUser] = useState<any>();
 
-  const [average, setAverage] = useState<number>(0);
+  const [average, setAverage] = useState<number | null>(null);
 
   const [addingReview, setAddingReview] = useState<boolean>(false);
   const [updatingReview, setUpdatingReview] = useState<boolean>(false);
   const [alreadyReviewd, setAlreadyReviewd] = useState<boolean>(false);
+  const [recountAverage, setRecountAverage] = useState<boolean>(false);
+
 
   useEffect(() => {
     const getAlbum = async () => {
@@ -39,6 +41,7 @@ export default function Review({}: Props) {
         .eq("id", id)
         .single();
       setAlbum(data);
+      setAverage(data.average)
       setIsLoading(false);
     };
     const getTracks = async () => {
@@ -60,33 +63,17 @@ export default function Review({}: Props) {
       getAlbum();
       getTracks();
       getCurrentUser();
-      getReviewAverage();
     }
   }, [id]);
 
   useEffect(() => {
-    if (reviews && album) {
-      getReviewAverage();
-    }
     if (user && reviews) {
       checkIsAlreadyReviewd();
     }
   }, [reviews, user]);
 
-  const getReviewAverage = async () => {
-    var sum = 0;
-    let count = 0;
-    count = reviews.length > 0 ? reviews.length : 0;
 
-    reviews?.forEach((element) => {
-      sum += element.note;
-    });
-    if (count > 0 && album && album?.nb_title > 0) {
-      setAverage(sum / count / (album?.nb_title / 10));
-    } else setAverage(0);
-  };
-
-  const getReviews = async () => {
+  const getReviews = async (recount = false) => {
     const { data, error } = await supabase
       .from("reviews")
       .select(
@@ -94,14 +81,17 @@ export default function Review({}: Props) {
         user:profiles(*)`
       )
       .eq("album_id", id);
-    setReviews(data as Notation[]);
+      await setReviews(data as Notation[]);
+    if (recount) {
+      updateAverage(data as Notation[])
+    }
   };
 
-  const closeAddingReview = () => {
+  const closeAddingReview = (recount = false) => {
     setAddingReview(false);
     setUpdatingReview(false);
     setReview(undefined);
-    getReviews();
+    getReviews(recount);
   };
 
   const handleEdit = (review: SetStateAction<Notation | undefined>) => {
@@ -117,15 +107,10 @@ export default function Review({}: Props) {
     }
   };
 
-  useEffect(() => {
-    if (average) {
-      updateAverage();
-    }
-  }, [average]);
-
-  async function updateAverage() {
+  async function updateAverage(reviewsData: Notation[]) {
+    const recount = getReviewAverage(reviewsData);
     const data = {
-      average: average,
+      average: recount,
     };
 
     try {
@@ -134,20 +119,32 @@ export default function Review({}: Props) {
         .update([data])
         .eq("id", album?.id);
       if (error) throw error;
-      closeAddingReview();
+      setRecountAverage(false)
+      setAverage(recount)
       toast.info("Average updated with success !");
     } catch (errorAdd) {
       toast.error("Average not updated !");
     }
   }
+
+  const getReviewAverage = (reviewsData: Notation[]) => {  
+    const sum = reviewsData.reduce((accumulator, element) => accumulator + element.note, 0);
+    const count = reviewsData.length > 0 ? reviewsData.length : 0;
+  
+    if (count > 0 && album && album?.nb_title > 0) {
+      return (sum / count) / (album?.nb_title / 10);
+    } else {
+      return 0;
+    }
+  };
+
   return (
     <>
       <IndexLayout>
         {!isLoading && album && reviews && user && (
-          // <div className="albumCover" style={{
-          //   backgroundImage: `url(${album.image})`
-          // }}>
-          <div>
+
+          <div className="relative">
+
             <a href={`/albums`} className="font-medium text-white">
               <button className="m-2 hover:bg-[#4547a8] text-blue-50 dark:text-blue-100 font-semibold hover:text-white py-2 px-4 border border-[#4547a8] hover:border-transparent rounded">
                 back
@@ -180,7 +177,7 @@ export default function Review({}: Props) {
                     <div className="flex justify-center">
                       <div className="w-80 md:w-full text-l my-5 mr-2 mb-2 px-3 py-1 text-center border border-[#4547a8] rounded-full">
                         Moyenne :{" "}
-                        {average == 0 ? "Aucune review" : average.toFixed(2)} /
+                        {average == null ? "Aucune review" : average.toFixed(2)} /
                         10
                       </div>
                     </div>
@@ -276,12 +273,13 @@ export default function Review({}: Props) {
             </div>
           </div>
         )}
-        <div className="flex items-center justify-center  text-center overflow-hidden pt-8">
+        <div className={addingReview || updatingReview ? 'blur-background absolute inset-0 z-40 flex items-center justify-center  text-center overflow-hidden pt-8' : ''}>
           {addingReview && (
             <ReviewAForm
               closeAddingReview={closeAddingReview}
               album={album}
               user={user}
+              setRecountAverage={setRecountAverage}
             />
           )}
           {updatingReview && (
@@ -290,6 +288,8 @@ export default function Review({}: Props) {
               album={album}
               user={user}
               notation={review}
+              setRecountAverage={setRecountAverage}
+
             />
           )}
           {!isLoading && album == null && <div>This album does not exist</div>}
@@ -298,6 +298,7 @@ export default function Review({}: Props) {
 
         <CommentSection />
       </IndexLayout>
+
     </>
   );
 }

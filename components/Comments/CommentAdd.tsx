@@ -43,7 +43,8 @@ export default function CommentAdd({getComments, userId, albumId}: Props) {
       .from("comments")
       .select("id")
       .order("id", { ascending: false });
-    if (data) {
+    if (data && data?.length > 0) {
+      console.log("data",data)
       setLastInsertedId(data[0].id);
     }
   }

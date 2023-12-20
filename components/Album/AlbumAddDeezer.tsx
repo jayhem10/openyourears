@@ -77,14 +77,6 @@ const AlbumAddDeezer = ({ visibility, changeVisible, getAlbums }: Props) => {
     await fetchLastAlbum();
   }
 
-  const emptySearch = () => {
-    setAlbums(null);
-    setSelectedAlbum(null);
-    setAlbumToAdd(null);
-    setAlbumAlreadyExist(false)
-    setIsChecked(false)
-  };
-
   const handleSelectAlbum = (album: DeezerAlbum | null) => {
     setSelectedAlbum(album);
     setAlbums([]);
@@ -167,10 +159,10 @@ const AlbumAddDeezer = ({ visibility, changeVisible, getAlbums }: Props) => {
   return (
     <>
       {visibility && (
-        <div className="modal mt-20">
-          <div className="bg-[#030303] border-2 border-indigo-500/50 shadow-md rounded px-2 md:px-8 pt-6 w-[80vw] md:w-[50vw] max-h-[90vh] overflow-y-auto ">
+        <div className="modal">
+          <div className="bg-[#030303] border-2 border-indigo-500/50 shadow-md rounded px-2 md:px-8 pt-6 w-[80vw] md:w-[50vw] max-h-[75vh] snap-y snap-mandatory overflow-y-scroll overflow-x-hidden scrollbar-thin scrollbar-track-gray-400/20 scrollbar-thumb-[#7275f2]/80">
             <h1 className="mt-2 mb-4 text-2xl font-bold">Search for an album</h1>
-            <Search onSearch={searchAlbums} emptySearch={emptySearch} />
+            <Search onSearch={searchAlbums} />
             {!selectedAlbum && !searchingAlbums &&
               <AlbumList albums={albums} onSelectAlbum={handleSelectAlbum} />
             }
